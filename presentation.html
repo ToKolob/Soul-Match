@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Soul Match | Product Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #18262b;
+      --cream: #f7f1e6;
+      --coral: #f36d52;
+      --blue: #3153c8;
+      --yellow: #f2cf58;
+      --mint: #bde5d0;
+      --white: #fffdf7;
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+    body { color: var(--ink); font-family: "Space Grotesk", sans-serif; background: var(--cream); }
+    button { font: inherit; }
+    button:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
+    .deck { position: relative; width: 100%; height: 100%; overflow-y: auto; scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+    .slide { position: relative; display: flex; min-height: 100%; height: 100vh; padding: clamp(26px, 5vw, 72px) clamp(24px, 8vw, 140px) 104px; overflow: auto; scroll-snap-align: start; background: var(--cream); }
+    .slide.active { animation: slide-in .42s ease both; }
+    @keyframes slide-in { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: translateX(0); } }
+    .slide::before { position: absolute; z-index: 0; inset: 0; pointer-events: none; opacity: .23; content: ""; background-image: radial-gradient(var(--ink) 1px, transparent 1px); background-size: 20px 20px; }
+    .slide-content { position: relative; z-index: 1; width: min(1100px, 100%); min-height: 100%; margin: auto; }
+    .eyebrow, .slide-number, .meta, .label { font: 500 11px "DM Mono", monospace; text-transform: uppercase; letter-spacing: .12em; }
+    .eyebrow { margin: 0 0 25px; color: var(--blue); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 840px; margin-bottom: 28px; font-size: clamp(3.8rem, 10vw, 9rem); line-height: .84; letter-spacing: -.09em; }
+    h1 em { color: var(--coral); font-style: normal; }
+    h2 { max-width: 950px; margin-bottom: 38px; font-size: clamp(2.6rem, 6vw, 6.2rem); line-height: .88; letter-spacing: -.08em; }
+    h3 { margin-bottom: 14px; font-size: 20px; letter-spacing: -.04em; }
+    .dek { max-width: 590px; font-size: clamp(1.1rem, 2vw, 1.6rem); line-height: 1.3; }
+    .footer-meta { position: absolute; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-between; gap: 20px; padding-top: 18px; border-top: 1px solid rgba(24,38,43,.25); }
+    .footer-meta span:last-child { text-align: right; }
+    .title-layout { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+    .title-stamp { display: inline-block; width: fit-content; margin-top: 32px; padding: 12px 15px; color: var(--ink); background: var(--yellow); font: 500 12px "DM Mono", monospace; transform: rotate(-2deg); }
+    .ring-mark { position: absolute; right: 5%; bottom: 9%; display: grid; place-items: center; width: clamp(150px, 23vw, 280px); height: clamp(150px, 23vw, 280px); border: clamp(18px, 3vw, 33px) solid var(--coral); border-radius: 50%; box-shadow: inset 0 0 0 9px var(--cream), 10px 10px 0 var(--ink); transform: rotate(14deg); }
+    .ring-mark::after { width: 42%; height: 42%; border-radius: 50%; background: var(--blue); content: ""; }
+    .ring-slide { background: var(--ink); color: var(--cream); }
+    .ring-slide::before { opacity: .1; }
+    .ring-slide .slide-content { display: flex; flex-direction: column; justify-content: center; }
+    .ring-slide .eyebrow { color: var(--yellow); }
+    .ring-layout { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(230px, .6fr); align-items: center; gap: clamp(24px, 5vw, 72px); }
+    .ring-image { display: block; width: 100%; max-height: 68vh; object-fit: contain; border: 1px solid rgba(247,241,230,.3); background: #090a10; }
+    .ring-caption { padding-left: 24px; border-left: 4px solid var(--coral); }
+    .ring-caption h3 { color: var(--yellow); font-size: clamp(1.8rem, 3vw, 3rem); }
+    .ring-caption p { color: rgba(247,241,230,.8); font-size: 17px; line-height: 1.45; }
+    .ring-caption strong { color: var(--mint); }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .feature { min-height: 155px; padding: 24px; border: 1px solid var(--ink); background: rgba(255,253,247,.5); }
+    .feature:nth-child(2) { background: var(--mint); }
+    .feature:nth-child(3) { background: var(--yellow); }
+    .feature:nth-child(4) { background: var(--coral); }
+    .feature p { margin-bottom: 0; line-height: 1.35; }
+    .feature strong { display: block; margin-bottom: 8px; font-size: 22px; letter-spacing: -.04em; }
+    .journey { display: grid; grid-template-columns: repeat(6, 1fr); align-items: center; gap: 9px; margin-top: 65px; }
+    .journey-step { min-height: 125px; padding: 16px 12px; border: 1px solid var(--ink); background: var(--white); }
+    .journey-step:nth-child(3), .journey-step:nth-child(5) { background: var(--yellow); }
+    .journey-step:nth-child(7) { background: var(--coral); }
+    .journey-step strong { display: block; margin-bottom: 10px; font-size: 18px; line-height: 1; }
+    .journey-step span { font: 500 10px "DM Mono", monospace; text-transform: uppercase; }
+    .arrow { font-size: 25px; text-align: center; }
+    .quote { max-width: 880px; margin: 30px 0 0; padding: 26px 30px; border-left: 8px solid var(--coral); background: var(--white); font-size: clamp(1.45rem, 3vw, 2.6rem); line-height: 1.05; letter-spacing: -.05em; }
+    .questions { display: grid; gap: 15px; margin-top: 28px; }
+    .question { padding: 18px 20px; border: 1px solid var(--ink); background: var(--white); font-size: 19px; }
+    .question::before { display: inline-block; margin-right: 13px; color: var(--coral); font: 500 12px "DM Mono", monospace; content: "?"; }
+    .scamper { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .scamper div { min-height: 125px; padding: 16px; border: 1px solid var(--ink); background: var(--white); }
+    .scamper div:nth-child(2n) { background: var(--mint); }
+    .scamper b { display: block; margin-bottom: 14px; color: var(--blue); font-size: 28px; }
+    .scamper span { font-size: 14px; line-height: 1.2; }
+    .prototype { display: grid; grid-template-columns: .95fr 1.05fr; gap: 34px; align-items: center; }
+    .phone { width: min(245px, 100%); margin: 0 auto; padding: 12px; border: 2px solid var(--ink); border-radius: 23px; background: var(--ink); box-shadow: 9px 9px 0 var(--coral); transform: rotate(-4deg); }
+    .phone-screen { min-height: 360px; padding: 22px 17px; border-radius: 14px; background: var(--mint); }
+    .phone-screen .mini-ring { width: 75px; height: 75px; margin: 20px auto 28px; border: 13px solid var(--coral); border-radius: 50%; background: var(--mint); }
+    .phone-screen h3 { font-size: 26px; }
+    .mini-line { height: 9px; margin: 12px 0; background: var(--ink); opacity: .7; }
+    .mvp-list { display: grid; gap: 12px; padding: 0; list-style: none; }
+    .mvp-list li { display: flex; gap: 13px; padding: 15px; border-bottom: 1px solid rgba(24,38,43,.25); font-size: 18px; }
+    .mvp-list li::before { color: var(--coral); content: "✦"; }
+    .risk-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; }
+    .risk { padding: 21px; border: 1px solid var(--ink); background: var(--white); }
+    .risk:nth-child(2), .risk:nth-child(5) { background: var(--yellow); }
+    .risk:nth-child(3), .risk:nth-child(6) { background: var(--mint); }
+    .risk strong { display: block; margin-bottom: 8px; font-size: 18px; }
+    .risk p { margin-bottom: 0; line-height: 1.3; }
+    .conclusion { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+    .next-steps { display: flex; flex-wrap: wrap; gap: 9px; max-width: 700px; margin-top: 35px; }
+    .next-steps span { padding: 10px 13px; border: 1px solid var(--ink); background: var(--yellow); font: 500 11px "DM Mono", monospace; text-transform: uppercase; }
+    .controls { position: fixed; z-index: 4; right: 25px; bottom: 22px; left: 25px; display: flex; justify-content: space-between; align-items: center; pointer-events: none; }
+    .controls > * { pointer-events: auto; }
+    .control-group { display: flex; gap: 8px; }
+    .control-button { display: grid; place-items: center; width: 43px; height: 38px; border: 1px solid var(--ink); color: var(--ink); background: var(--cream); cursor: pointer; }
+    .control-button:hover { color: var(--white); background: var(--blue); }
+    .dots { display: flex; gap: 7px; max-width: 55vw; overflow: auto; padding: 4px; }
+    .dot { flex: 0 0 8px; width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; background: var(--ink); opacity: .3; cursor: pointer; }
+    .dot.active { width: 24px; border-radius: 8px; background: var(--coral); opacity: 1; }
+    .notes-panel { position: fixed; z-index: 3; right: 0; bottom: 0; width: min(430px, 100%); padding: 28px; border-top: 2px solid var(--ink); border-left: 2px solid var(--ink); background: var(--white); box-shadow: -7px -7px 0 var(--ink); transform: translateY(105%); transition: transform .3s ease; }
+    .notes-panel.open { transform: translateY(0); }
+    .notes-panel h3 { margin-bottom: 10px; }
+    .notes-panel p { line-height: 1.45; }
+    .notes-close { position: absolute; top: 17px; right: 18px; border: 0; background: transparent; font-size: 20px; cursor: pointer; }
+    @media (max-width: 760px) {
+      .slide { padding: 25px 20px 91px; }
+      .slide-content { min-height: auto; }
+      h1 { font-size: clamp(3.4rem, 17vw, 6rem); }
+      h2 { font-size: clamp(2.8rem, 13vw, 5rem); }
+      .ring-mark { right: 9%; bottom: 18%; opacity: .65; }
+      .grid-2, .prototype { grid-template-columns: 1fr; }
+      .feature { min-height: 0; padding: 17px; }
+      .journey { grid-template-columns: repeat(2, 1fr); margin-top: 25px; }
+      .journey .arrow { display: none; }
+      .journey-step { min-height: 92px; }
+      .scamper { grid-template-columns: repeat(2, 1fr); }
+      .scamper div { min-height: 100px; }
+      .risk-grid { grid-template-columns: 1fr 1fr; }
+      .phone { width: 190px; }
+      .phone-screen { min-height: 250px; }
+      .footer-meta { position: relative; margin-top: 35px; }
+      .ring-layout { grid-template-columns: 1fr; gap: 24px; }
+      .ring-image { max-height: 51vh; }
+      .ring-caption { padding-left: 16px; }
+      .ring-caption h3 { margin-bottom: 8px; }
+      .ring-caption p { margin-bottom: 0; font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" aria-label="Soul Match product presentation">
+    <section class="slide active" data-notes="Soul Match is a fictional product concept. It combines a smart ring, an app, a personalized avatar, soulmate discovery, and a digital memory feature.">
+      <div class="slide-content title-layout"><p class="eyebrow">A speculative product concept / 2026</p><h1>Soul <em>Match</em></h1><p class="dek">Meet your soulmate.<br>Preserve your presence.</p><span class="title-stamp">Name: ____________________ &nbsp; Course: ____________________</span><div class="ring-mark" aria-hidden="true"></div></div>
+    </section>
+
+    <section class="slide ring-slide" data-notes="This is the proposed Soul Match ring. The product board shows the ring from multiple angles, the sensors inside it, the charging case, available finishes, and how it looks while being worn.">
+      <div class="slide-content"><p class="eyebrow">01 / Meet the ring</p><div class="ring-layout"><img class="ring-image" src="assets/ring%20designh.jpeg" alt="Soulmates smart ring product design showing the ring, sensors, finishes, and charging case"><div class="ring-caption"><h3>One ring.<br>Infinite connections.</h3><p>The ring quietly learns from <strong>choices, movement, habits, and behavior</strong> so the app can create a more personal avatar.</p><p class="label">Product vision / fictional technology</p></div></div><div class="footer-meta"><span class="meta">Soul Match / Hardware concept</span><span class="meta">The product starts here</span></div></div>
+    </section>
+
+    <section class="slide" data-notes="The central idea is that the ring learns from everyday behavior instead of asking users to complete a long profile. After the first month, the system creates an avatar that represents the user's habits and personality.">
+      <div class="slide-content"><p class="eyebrow">02 / The product</p><h2>The ring learns<br>who you are.</h2><div class="grid-2"><div class="feature"><strong>Apply</strong><p>Join through the Soul Match app.</p></div><div class="feature"><strong>Try free</strong><p>Receive the ring at no cost for one month.</p></div><div class="feature"><strong>Observe</strong><p>The ring scans behavior for one month.</p></div><div class="feature"><strong>Become</strong><p>The system creates a personalized avatar.</p></div></div><div class="footer-meta"><span class="meta">Soul Match / Principal idea</span><span class="meta">A fictional product</span></div></div>
+    </section>
+
+    <section class="slide" data-notes="The first purpose is romantic: the avatar helps identify a person who might be a good match. The second purpose is emotional and futuristic: a copy of the user could remain available for a family member or child after the user's death.">
+      <div class="slide-content"><p class="eyebrow">02 / The promise</p><h2>One avatar.<br>Two kinds of connection.</h2><div class="grid-2"><div class="feature"><strong>Find a soulmate</strong><p>The avatar uses what it learns about you to suggest a compatible person.</p></div><div class="feature"><strong>Leave a presence</strong><p>A digital copy preserves parts of your personality for people you love.</p></div></div><p class="quote">The product connects relationships, identity, and memory in one experience.</p><div class="footer-meta"><span class="meta">Soul Match / Concept</span><span class="meta">Love + legacy</span></div></div>
+    </section>
+
+    <section class="slide" data-notes="This is the complete journey from sign-up to the long-term memory feature. The free first month gives users time to experience the ring before the paid subscription begins.">
+      <div class="slide-content"><p class="eyebrow">03 / The user journey</p><h2>From first tap<br>to forever.</h2><div class="journey"><div class="journey-step"><span>01</span><strong>Apply</strong><span>in the app</span></div><div class="arrow">→</div><div class="journey-step"><span>02</span><strong>Receive</strong><span>the ring</span></div><div class="arrow">→</div><div class="journey-step"><span>03</span><strong>Scan</strong><span>for one month</span></div><div class="arrow">→</div><div class="journey-step"><span>04</span><strong>Avatar</strong><span>is created</span></div><div class="arrow">→</div><div class="journey-step"><span>05</span><strong>Match</strong><span>then memory</span></div></div><div class="footer-meta"><span class="meta">Free month → paid subscription</span><span class="meta">Observe / understand / connect</span></div></div>
+    </section>
+
+    <section class="slide" data-notes="Empathy means considering the people and emotions behind the product. Soul Match is not only a dating idea. The memory feature involves grief, family, identity, and trust, so it needs especially sensitive design.">
+      <div class="slide-content"><p class="eyebrow">04 / Design thinking: empathy</p><h2>Who is carrying<br>the feeling?</h2><div class="grid-2"><div class="feature"><strong>The seeker</strong><p>Someone curious about finding a partner without having to write a perfect profile.</p></div><div class="feature"><strong>The family</strong><p>A loved one thinking about memory, legacy, and what should remain.</p></div></div><div class="questions"><div class="question">What would users want technology to understand about them?</div><div class="question">Would a digital copy feel comforting, useful, or strange?</div><div class="question">What would loved ones need during grief?</div></div><div class="footer-meta"><span class="meta">Listen before building</span><span class="meta">People before features</span></div></div>
+    </section>
+
+    <section class="slide" data-notes="The product cannot only be interesting. It must also make users feel informed and in control. The free trial, paid subscription, behavior scanning, and memory copy all need clear explanations.">
+      <div class="slide-content"><p class="eyebrow">05 / Design thinking: define</p><h2>Interesting is not<br>enough.</h2><div class="grid-2"><div class="feature"><strong>Personal</strong><p>It learns from the individual user.</p></div><div class="feature"><strong>Simple</strong><p>The ring works quietly in the background.</p></div><div class="feature"><strong>Transparent</strong><p>Users understand the trial, payment, and data use.</p></div><div class="feature"><strong>Sensitive</strong><p>Consent and grief matter as much as the technology.</p></div></div><p class="quote">People need control over their data, identity, and digital presence.</p><div class="footer-meta"><span class="meta">Define the real need</span><span class="meta">Trust is a feature</span></div></div>
+    </section>
+
+    <section class="slide" data-notes="Instead of treating these as separate products, the concept connects them through the avatar. The avatar is the bridge between understanding who someone is, finding a compatible person, and preserving a version of that identity.">
+      <div class="slide-content"><p class="eyebrow">06 / Design thinking: ideate</p><h2>What if a ring<br>could know you?</h2><div class="questions"><div class="question">What if a ring could learn from behavior?</div><div class="question">What if it could create an avatar of its owner?</div><div class="question">What if that avatar could help find a soulmate?</div><div class="question">What if it could also preserve memories?</div></div><p class="quote">A wearable product that begins as a dating service and becomes a digital legacy service.</p><div class="footer-meta"><span class="meta">Generate / connect / imagine</span><span class="meta">The avatar is the bridge</span></div></div>
+    </section>
+
+    <section class="slide" data-notes="SCAMPER helped expand the original idea. The most important changes were combining the ring with an avatar, adapting behavior tracking, and putting the avatar to another use as a digital memory for loved ones.">
+      <div class="slide-content"><p class="eyebrow">07 / A creativity tool</p><h2>Build the strange<br>thing on purpose.</h2><div class="scamper"><div><b>S</b><span>Substitute forms with behavior data</span></div><div><b>C</b><span>Combine ring, app, avatar, and matching</span></div><div><b>A</b><span>Adapt wearable tracking for relationships</span></div><div><b>M</b><span>Modify dating into a lifelong product</span></div><div><b>P</b><span>Put the avatar to use as legacy</span></div><div><b>E</b><span>Eliminate complicated profiles</span></div><div><b>R</b><span>Rearrange: observe first, match later</span></div></div><div class="footer-meta"><span class="meta">SCAMPER</span><span class="meta">Substitute / Combine / Adapt / Modify / Put to another use / Eliminate / Rearrange</span></div></div>
+    </section>
+
+    <section class="slide" data-notes="The MVP would not immediately promise to recreate a whole person. It would test whether users understand the concept and feel comfortable with the avatar and data controls. The larger memory-copy idea could be explored later through careful research.">
+      <div class="slide-content"><p class="eyebrow">08 / Prototype → future MVP</p><h2>Start with the<br>smallest promise.</h2><div class="prototype"><div class="phone" aria-label="Illustration of the Soul Match app"><div class="phone-screen"><p class="label">Soul Match / Day 18</p><div class="mini-ring"></div><h3>Your avatar is taking shape.</h3><div class="mini-line"></div><div class="mini-line" style="width: 72%"></div><div class="mini-line" style="width: 48%"></div></div></div><ul class="mvp-list"><li>App onboarding and free-month explanation</li><li>Ring data visualized in the app</li><li>Personalized avatar preview</li><li>Example match recommendation</li><li>Consent, privacy, and cancellation controls</li></ul></div><div class="footer-meta"><span class="meta">The full idea is speculative</span><span class="meta">MVP = test, learn, refine</span></div></div>
+    </section>
+
+    <section class="slide" data-notes="These risks are part of the product, not an afterthought. A digital copy should never be presented as the actual person or as a replacement for a loved one. Users need control over what is collected, what is stored, and who can access it.">
+      <div class="slide-content"><p class="eyebrow">09 / Risks + ethics</p><h2>Every powerful idea<br>needs a boundary.</h2><div class="risk-grid"><div class="risk"><strong>Surveillance</strong><p>What does continuous monitoring reveal?</p></div><div class="risk"><strong>Ownership</strong><p>Who owns the behavior data and avatar?</p></div><div class="risk"><strong>Consent</strong><p>Who can access the digital copy?</p></div><div class="risk"><strong>Money</strong><p>Is the subscription clear after month one?</p></div><div class="risk"><strong>Grief</strong><p>Can technology support without replacing?</p></div><div class="risk"><strong>Identity</strong><p>Can an avatar truly represent a person?</p></div></div><div class="footer-meta"><span class="meta">Responsible by design</span><span class="meta">Fictional concept / real questions</span></div></div>
+    </section>
+
+    <section class="slide" data-notes="Soul Match is intentionally ambitious and fictional. Its value as a design concept is that it creates a conversation about relationships, personal data, identity, and memory. The next step is to reduce the idea into a responsible MVP that can be tested.">
+      <div class="slide-content conclusion"><p class="eyebrow">10 / Conclusion</p><h2>What part of<br>a person can remain?</h2><p class="dek">Soul Match begins with a ring. It learns through an avatar. It ends with a conversation about love, identity, and memory.</p><div class="next-steps"><span>Test the concept</span><span>Design the ring</span><span>Prototype the avatar</span><span>Research consent</span><span>Choose the promise</span></div><div class="footer-meta"><span class="meta">Thank you</span><span class="meta">Soul Match / End</span></div></div>
+    </section>
+  </main>
+
+  <div class="controls" aria-label="Presentation controls"><div class="control-group"><button id="prev" class="control-button" type="button" aria-label="Previous slide">←</button><button id="next" class="control-button" type="button" aria-label="Next slide">→</button><button id="notes-toggle" class="control-button" type="button" aria-label="Toggle speaker notes">☷</button></div><div id="dots" class="dots" aria-label="Choose slide"></div></div>
+  <aside id="notes-panel" class="notes-panel" aria-live="polite"><button id="notes-close" class="notes-close" type="button" aria-label="Close speaker notes">×</button><p class="label">Speaker notes</p><h3 id="notes-title">Slide 1</h3><p id="notes-text"></p></aside>
+
+  <script>
+    const slides = [...document.querySelectorAll('.slide')];
+    const dots = document.querySelector('#dots');
+    const notesPanel = document.querySelector('#notes-panel');
+    const notesTitle = document.querySelector('#notes-title');
+    const notesText = document.querySelector('#notes-text');
+    let current = 0;
+
+    slides.forEach((slide, index) => {
+      const dot = document.createElement('button');
+      dot.className = `dot${index === 0 ? ' active' : ''}`;
+      dot.type = 'button';
+      dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+      dot.addEventListener('click', () => showSlide(index));
+      dots.appendChild(dot);
+    });
+
+    function updateSlideState(index) {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => slide.classList.toggle('active', slideIndex === current));
+      [...dots.children].forEach((dot, dotIndex) => dot.classList.toggle('active', dotIndex === current));
+      notesTitle.textContent = `Slide ${current + 1}`;
+      notesText.textContent = slides[current].dataset.notes;
+      document.querySelector('#prev').disabled = current === 0;
+      document.querySelector('#next').disabled = current === slides.length - 1;
+    }
+
+    function showSlide(index) {
+      const target = Math.max(0, Math.min(index, slides.length - 1));
+      slides[target].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      updateSlideState(target);
+    }
+
+    const slideObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.intersectionRatio >= .6) updateSlideState(slides.indexOf(entry.target));
+      });
+    }, { root: document.querySelector('.deck'), threshold: [.6] });
+    slides.forEach(slide => slideObserver.observe(slide));
+
+    document.querySelector('#prev').addEventListener('click', () => showSlide(current - 1));
+    document.querySelector('#next').addEventListener('click', () => showSlide(current + 1));
+    document.querySelector('#notes-toggle').addEventListener('click', () => notesPanel.classList.toggle('open'));
+    document.querySelector('#notes-close').addEventListener('click', () => notesPanel.classList.remove('open'));
+    document.addEventListener('keydown', event => {
+      if (['ArrowRight', 'PageDown', ' '].includes(event.key)) { event.preventDefault(); showSlide(current + 1); }
+      if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); showSlide(current - 1); }
+      if (event.key.toLowerCase() === 'n') notesPanel.classList.toggle('open');
+      if (event.key === 'Escape') notesPanel.classList.remove('open');
+    });
+    updateSlideState(0);
+  </script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="A scientifically questionable soulmate quiz for people with excellent nonsense opinions.">
+	<title>Soul Match // Extremely Accurate</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--ink: #172329;
+			--paper: #f7f3e9;
+			--coral: #ff6b57;
+			--cobalt: #3154c9;
+			--lemon: #f4d35e;
+			--mint: #b9e8d1;
+			--line: rgba(23, 35, 41, .2);
+			--shadow: 7px 7px 0 var(--ink);
+		}
+
+		* { box-sizing: border-box; }
+		html { min-width: 320px; background: var(--paper); }
+		body {
+			min-height: 100vh;
+			margin: 0;
+			color: var(--ink);
+			font-family: "Space Grotesk", sans-serif;
+			background-color: var(--paper);
+			background-image: radial-gradient(rgba(23, 35, 41, .13) 1px, transparent 1px);
+			background-size: 18px 18px;
+		}
+		button { font: inherit; }
+		button:focus-visible { outline: 3px solid var(--cobalt); outline-offset: 4px; }
+
+		.page-shell { width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: 30px 0 58px; }
+		.topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 76px; }
+		.brand { display: flex; align-items: center; gap: 11px; font-weight: 700; letter-spacing: -.04em; }
+		.brand-mark { display: grid; place-items: center; width: 34px; height: 34px; color: var(--paper); background: var(--ink); font-size: 20px; transform: rotate(-8deg); }
+		.status { margin: 0; color: var(--ink); font: 500 11px "DM Mono", monospace; text-transform: uppercase; letter-spacing: .12em; }
+
+		.intro { display: grid; grid-template-columns: 1.15fr .85fr; align-items: end; gap: 58px; margin-bottom: 42px; }
+		.eyebrow { display: inline-block; margin: 0 0 16px; color: var(--cobalt); font: 500 12px "DM Mono", monospace; text-transform: uppercase; letter-spacing: .1em; }
+		h1, h2, p { margin-top: 0; }
+		h1 { max-width: 690px; margin-bottom: 22px; font-size: clamp(3.2rem, 8vw, 7.4rem); line-height: .84; letter-spacing: -.09em; }
+		.intro-copy { max-width: 300px; margin-bottom: 7px; font-size: 16px; line-height: 1.45; }
+		.intro-copy strong { color: var(--coral); }
+
+		.quiz-wrap { position: relative; max-width: 850px; margin: 0 auto; }
+		.quiz-card, .result-card { border: 2px solid var(--ink); background: var(--paper); box-shadow: var(--shadow); }
+		.quiz-card { min-height: 485px; padding: clamp(25px, 5vw, 57px); }
+		.quiz-meta { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 48px; font: 500 12px "DM Mono", monospace; text-transform: uppercase; }
+		.progress { flex: 1; height: 9px; border: 1px solid var(--ink); background: var(--lemon); }
+		.progress-bar { width: 25%; height: 100%; background: var(--cobalt); transition: width .35s ease; }
+		.question-number { white-space: nowrap; }
+		.question-stage { animation: arrive .35s ease both; }
+		@keyframes arrive { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+		h2 { max-width: 680px; margin-bottom: 30px; font-size: clamp(1.9rem, 4vw, 3.4rem); line-height: .98; letter-spacing: -.065em; }
+		.answers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+		.answer { display: flex; align-items: center; min-height: 62px; padding: 15px 17px; border: 1px solid var(--ink); color: var(--ink); background: transparent; text-align: left; cursor: pointer; transition: transform .18s ease, background .18s ease, color .18s ease; }
+		.answer:hover { transform: translate(-3px, -3px); background: var(--mint); box-shadow: 3px 3px 0 var(--ink); }
+		.answer.selected { color: var(--paper); background: var(--cobalt); box-shadow: 4px 4px 0 var(--ink); transform: translate(-3px, -3px); }
+		.answer-marker { display: grid; place-items: center; flex: 0 0 25px; width: 25px; height: 25px; margin-right: 12px; border: 1px solid currentColor; border-radius: 50%; font: 500 11px "DM Mono", monospace; }
+		.dancer-stage { display: flex; align-items: center; justify-content: center; gap: 16px; margin: -10px 0 28px; }
+		.dancer-frame { display: grid; place-items: center; width: 150px; height: 150px; border: 2px solid var(--ink); background: var(--lemon); overflow: hidden; }
+		.dancer-gift { display: block; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+		.dancer-side { display: grid; place-items: center; flex: 0 0 47px; width: 47px; height: 47px; border: 1px solid var(--ink); color: var(--ink); background: var(--mint); font-size: 25px; cursor: pointer; }
+		.dancer-side:hover { color: var(--paper); background: var(--cobalt); }
+		.dancer-side.selected { color: var(--paper); background: var(--coral); box-shadow: 3px 3px 0 var(--ink); }
+		.nav { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-top: 42px; }
+		.back-button, .next-button, .restart-button { border: 0; cursor: pointer; }
+		.back-button { padding: 8px 0; color: var(--ink); background: transparent; text-decoration: underline; text-underline-offset: 4px; }
+		.back-button:disabled { visibility: hidden; }
+		.next-button, .restart-button { padding: 14px 22px; color: var(--paper); background: var(--ink); font-weight: 700; }
+		.next-button:hover, .restart-button:hover { color: var(--ink); background: var(--lemon); }
+		.next-button:disabled { opacity: .35; cursor: not-allowed; }
+
+		.result-card { display: grid; grid-template-columns: .85fr 1.15fr; overflow: hidden; animation: reveal .55s ease both; }
+		@keyframes reveal { from { opacity: 0; transform: scale(.97) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+		.portrait-wrap { min-height: 460px; background: var(--coral); }
+		.portrait { display: block; width: 100%; height: 100%; min-height: 460px; object-fit: cover; filter: saturate(1.1) contrast(1.05); }
+		.portrait-fallback { display: grid; place-items: center; height: 100%; min-height: 460px; padding: 30px; color: var(--paper); font-size: 8rem; text-align: center; }
+		.result-copy { padding: clamp(28px, 5vw, 56px); }
+		.result-kicker { margin-bottom: 15px; color: var(--coral); font: 500 12px "DM Mono", monospace; text-transform: uppercase; letter-spacing: .1em; }
+		.result-copy h2 { margin-bottom: 15px; font-size: clamp(2.4rem, 5vw, 4.8rem); }
+		.match-line { display: flex; align-items: center; gap: 10px; margin-bottom: 29px; font: 500 13px "DM Mono", monospace; text-transform: uppercase; }
+		.match-score { padding: 5px 8px; background: var(--lemon); }
+		.result-description { max-width: 430px; margin-bottom: 27px; font-size: 18px; line-height: 1.4; }
+		.trait-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 37px; padding: 0; list-style: none; }
+		.trait-list li { padding: 8px 10px; border: 1px solid var(--ink); font: 500 11px "DM Mono", monospace; text-transform: uppercase; }
+		.result-note { margin-bottom: 25px; color: rgba(23, 35, 41, .65); font-size: 13px; }
+		.hidden { display: none; }
+		.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+		@media (max-width: 700px) {
+			.page-shell { width: min(100% - 26px, 560px); padding-top: 20px; }
+			.topbar { margin-bottom: 58px; }
+			.status { font-size: 9px; text-align: right; }
+			.intro { display: block; margin-bottom: 30px; }
+			h1 { margin-bottom: 18px; font-size: clamp(3.4rem, 18vw, 6rem); }
+			.intro-copy { max-width: 330px; }
+			.quiz-card { min-height: 540px; padding: 25px 20px; }
+			.quiz-meta { margin-bottom: 37px; }
+			.answers { grid-template-columns: 1fr; gap: 10px; }
+			.nav { margin-top: 30px; }
+			.result-card { display: block; }
+			.portrait-wrap, .portrait, .portrait-fallback { min-height: 300px; height: 300px; }
+			.result-copy { padding: 30px 22px 25px; }
+			.result-copy h2 { font-size: 3.2rem; }
+		}
+	</style>
+</head>
+<body>
+	<main class="page-shell">
+		<header class="topbar">
+			<div class="brand"><span class="brand-mark" aria-hidden="true">✦</span><span>SOUL MATCH</span></div>
+			<p class="status">A peer-reviewed-ish experience / 2026</p>
+		</header>
+
+		<section class="intro" aria-labelledby="page-title">
+			<div>
+				<p class="eyebrow">The internet's least requested service</p>
+				<h1 id="page-title">Find your<br><em>soul mate.</em></h1>
+			</div>
+			<p class="intro-copy">Four questions. One destiny. <strong>Zero scientific backing.</strong> Answer with your whole heart, or at least your snack hand.</p>
+		</section>
+
+		<section class="quiz-wrap" aria-label="Soulmate quiz">
+			<div id="quiz-card" class="quiz-card">
+				<div class="quiz-meta">
+					<span id="question-number" class="question-number">Question 01 / 04</span>
+					<div class="progress" role="progressbar" aria-label="Quiz progress" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1"><div id="progress-bar" class="progress-bar"></div></div>
+				</div>
+				<div id="question-stage" class="question-stage" aria-live="polite">
+					<h2 id="question-text"></h2>
+					<div id="answers" class="answers" role="group" aria-label="Answer choices"></div>
+				</div>
+				<nav class="nav" aria-label="Quiz navigation">
+					<button id="back-button" class="back-button" type="button">← Back</button>
+					<button id="next-button" class="next-button" type="button" disabled>That's my answer →</button>
+				</nav>
+			</div>
+
+			<div id="result-card" class="result-card hidden" aria-live="polite">
+				<div class="portrait-wrap"><img id="portrait" class="portrait" alt="" crossorigin="anonymous"><div id="portrait-fallback" class="portrait-fallback hidden" aria-hidden="true">☻</div></div>
+				<div class="result-copy">
+					<p class="result-kicker">Your scientifically dubious match is...</p>
+					<h2 id="result-name"></h2>
+					<div class="match-line"><span id="match-score" class="match-score"></span><span>cosmic alignment</span></div>
+					<p id="result-description" class="result-description"></p>
+					<ul id="trait-list" class="trait-list"></ul>
+					<p class="result-note">This result was calculated using advanced vibes, snack logic, and absolutely no data.</p>
+					<button id="restart-button" class="restart-button" type="button">Try another destiny ↗</button>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<script>
+		const questions = [
+			{ text: "Which signal are you sending into the night?", answers: ["A suspiciously confident thumbs-up", "The double-tap heart", "A 4-minute voice note", "I communicate through interpretive dance"] },
+			{ text: "The sandwich question that has ended friendships: what goes first?", answers: ["Peanut butter. Obviously.", "Jelly, for structural reasons", "Both at once. Controlled chaos.", "I eat the bread and move on"] },
+			{ text: "The tiny ballerina is spinning. Which side has the better vibes?", answers: ["Left side", "Right side"], dancer: true },
+			{ text: "At a party, you discover the snack table has a tiny velvet rope. Why?", answers: ["The crisps are VIPs", "There is a strict dip capacity", "I am the bouncer now", "I leave and start my own party"] }
+		];
+
+		const matches = [
+			{ name: "Bingo Stardust", score: 98, description: "A part-time cloud consultant who owns seven capes and believes every pigeon has a secret agenda. Bingo will bring snacks to your first date, but only triangular ones.", traits: ["cape enthusiast", "dip strategist", "moon voicemail"], image: "https://loremflickr.com/900/900/awkward,portrait?lock=11" },
+			{ name: "Mildred Thunder", score: 87, description: "A velvet-rope philosopher and professional birthday candle tester. Mildred has never lost an argument with a vending machine and will absolutely ask for your star sign before dessert.", traits: ["snack bouncer", "soft menace", "excellent posture"], image: "https://loremflickr.com/900/900/eccentric,person?lock=22" },
+			{ name: "Gary (Probably)", score: 91, description: "An amateur magician whose only trick is finding the best seat in any room. Gary owns a spinning ballerina called Denise and has strong, nuanced opinions about toast.", traits: ["toast scholar", "desk dancer", "mysterious pockets"], image: "https://loremflickr.com/900/900/unusual,face?lock=33" },
+			{ name: "Dr. Pickle Jones", score: 84, description: "A marine biologist for landlocked lakes and inventor of the emotional support sandwich. Dr. Jones says 'interesting' before every sentence and means it every time.", traits: ["pickle adjacent", "lake expert", "curious knees"], image: "https://loremflickr.com/900/900/funny,portrait?lock=44" }
+		];
+
+		let currentQuestion = 0;
+		let selections = [];
+		const questionText = document.querySelector('#question-text');
+		const answers = document.querySelector('#answers');
+		const questionNumber = document.querySelector('#question-number');
+		const progressBar = document.querySelector('#progress-bar');
+		const progress = document.querySelector('.progress');
+		const nextButton = document.querySelector('#next-button');
+		const backButton = document.querySelector('#back-button');
+		const quizCard = document.querySelector('#quiz-card');
+		const resultCard = document.querySelector('#result-card');
+
+		function renderQuestion() {
+			const question = questions[currentQuestion];
+			document.querySelectorAll('.dancer-stage').forEach(stage => stage.remove());
+			questionText.textContent = question.text;
+			questionNumber.textContent = `Question ${String(currentQuestion + 1).padStart(2, '0')} / ${String(questions.length).padStart(2, '0')}`;
+			progressBar.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+			progress.setAttribute('aria-valuenow', currentQuestion + 1);
+			nextButton.textContent = currentQuestion === questions.length - 1 ? 'Reveal my destiny →' : "That's my answer →";
+			nextButton.disabled = selections[currentQuestion] === undefined;
+			backButton.disabled = currentQuestion === 0;
+			answers.innerHTML = '';
+			if (question.dancer) {
+				const dancerStage = document.createElement('div');
+				dancerStage.className = 'dancer-stage';
+				dancerStage.setAttribute('aria-label', 'Choose the side of the spinning ballerina');
+				dancerStage.innerHTML = `<button class="dancer-side${selections[currentQuestion] === 0 ? ' selected' : ''}" type="button" aria-label="Choose left side" aria-pressed="${selections[currentQuestion] === 0}">←</button><div class="dancer-frame"><img class="dancer-gift" src="assets/Spinning_Dancer.gif" alt="A spinning ballerina-shaped gift"></div><button class="dancer-side${selections[currentQuestion] === 1 ? ' selected' : ''}" type="button" aria-label="Choose right side" aria-pressed="${selections[currentQuestion] === 1}">→</button>`;
+				questionText.after(dancerStage);
+				const dancerButtons = dancerStage.querySelectorAll('.dancer-side');
+				dancerButtons.forEach((button, index) => button.addEventListener('click', () => {
+					selections[currentQuestion] = index;
+					renderQuestion();
+					answers.children[index].focus();
+				}));
+			}
+			question.answers.forEach((answer, index) => {
+				const button = document.createElement('button');
+				button.type = 'button';
+				button.className = `answer${selections[currentQuestion] === index ? ' selected' : ''}`;
+				button.setAttribute('aria-pressed', selections[currentQuestion] === index);
+				button.innerHTML = `<span class="answer-marker">${String.fromCharCode(65 + index)}</span><span>${answer}</span>`;
+				button.addEventListener('click', () => {
+					selections[currentQuestion] = index;
+					renderQuestion();
+					answers.children[index].focus();
+				});
+				answers.appendChild(button);
+			});
+		}
+
+		function showResult() {
+			const total = selections.reduce((sum, answer, index) => sum + (answer * (index + 2)), 0);
+			const match = matches[total % matches.length];
+			document.querySelector('#result-name').textContent = match.name;
+			document.querySelector('#match-score').textContent = `${match.score}%`;
+			document.querySelector('#result-description').textContent = match.description;
+			document.querySelector('#trait-list').innerHTML = match.traits.map(trait => `<li>${trait}</li>`).join('');
+			const portrait = document.querySelector('#portrait');
+			const fallback = document.querySelector('#portrait-fallback');
+			portrait.alt = `Portrait of ${match.name}`;
+			portrait.src = match.image;
+			portrait.classList.remove('hidden');
+			fallback.classList.add('hidden');
+			quizCard.classList.add('hidden');
+			resultCard.classList.remove('hidden');
+			document.querySelector('#restart-button').focus();
+		}
+
+		nextButton.addEventListener('click', () => {
+			if (selections[currentQuestion] === undefined) return;
+			if (currentQuestion === questions.length - 1) showResult();
+			else { currentQuestion += 1; renderQuestion(); questionText.focus(); }
+		});
+		backButton.addEventListener('click', () => { if (currentQuestion > 0) { currentQuestion -= 1; renderQuestion(); } });
+		document.querySelector('#restart-button').addEventListener('click', () => {
+			currentQuestion = 0;
+			selections = [];
+			resultCard.classList.add('hidden');
+			quizCard.classList.remove('hidden');
+			renderQuestion();
+			document.querySelector('#question-text').focus();
+		});
+		document.querySelector('#portrait').addEventListener('error', event => {
+			event.currentTarget.classList.add('hidden');
+			document.querySelector('#portrait-fallback').classList.remove('hidden');
+		});
+		questionText.tabIndex = -1;
+		renderQuestion();
+	</script>
+</body>
+</html>
