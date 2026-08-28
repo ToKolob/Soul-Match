@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Samaúma | Eco-Cultural Resort</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #18262b;
+      --cream: #f7f1e6;
+      --forest: #1a3a2e;
+      --water: #2b6e8e;
+      --earth: #d4a574;
+      --mint: #bde5d0;
+      --white: #fffdf7;
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+    body { color: var(--ink); font-family: "Space Grotesk", sans-serif; background: var(--cream); }
+    button { font: inherit; }
+    button:focus-visible { outline: 3px solid var(--water); outline-offset: 4px; }
+    .deck { position: relative; width: 100%; height: 100%; overflow-y: auto; scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+    .slide { position: relative; display: flex; min-height: 100%; height: 100vh; padding: clamp(26px, 5vw, 72px) clamp(24px, 8vw, 140px) 104px; overflow: hidden; scroll-snap-align: start; background: var(--cream); }
+    .slide.active { animation: slide-in .42s ease both; }
+    @keyframes slide-in { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: translateX(0); } }
+    .slide::before { position: absolute; z-index: 0; inset: 0; pointer-events: none; opacity: .23; content: ""; background-image: radial-gradient(var(--ink) 1px, transparent 1px); background-size: 20px 20px; }
+    .slide-content { position: relative; z-index: 1; width: min(1100px, 100%); min-height: 100%; margin: auto; }
+    .eyebrow, .slide-number, .meta, .label { font: 500 11px "DM Mono", monospace; text-transform: uppercase; letter-spacing: .12em; }
+    .eyebrow { margin: 0 0 25px; color: var(--water); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 840px; margin-bottom: 28px; font-size: clamp(3.8rem, 10vw, 9rem); line-height: .84; letter-spacing: -.09em; }
+    h1 em { color: var(--earth); font-style: normal; }
+    h2 { max-width: 950px; margin-bottom: 38px; font-size: clamp(2.6rem, 6vw, 6.2rem); line-height: .88; letter-spacing: -.08em; }
+    h3 { margin-bottom: 14px; font-size: 20px; letter-spacing: -.04em; }
+    .dek { max-width: 590px; font-size: clamp(1.1rem, 2vw, 1.6rem); line-height: 1.3; }
+    .footer-meta { position: absolute; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-between; gap: 20px; padding-top: 18px; border-top: 1px solid rgba(24,38,43,.25); }
+    .footer-meta span:last-child { text-align: right; }
+    .title-layout { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+    .title-stamp { display: inline-block; width: fit-content; margin-top: 32px; padding: 12px 15px; color: var(--ink); background: var(--earth); font: 500 12px "DM Mono", monospace; transform: rotate(-2deg); }
+    .forest-slide { background: var(--forest); color: var(--cream); }
+    .forest-slide::before { opacity: .1; }
+    .forest-slide .slide-content { display: flex; flex-direction: column; justify-content: center; }
+    .forest-slide .eyebrow { color: var(--earth); }
+    .forest-slide h1 { color: var(--cream); }
+    .forest-slide .dek { color: rgba(247,241,230,.8); }
+    .water-slide { background: var(--water); color: var(--cream); }
+    .water-slide::before { opacity: .1; }
+    .water-slide .slide-content { display: flex; flex-direction: column; justify-content: center; }
+    .water-slide .eyebrow { color: var(--earth); }
+    .water-slide h1 { color: var(--cream); }
+    .water-slide .dek { color: rgba(247,241,230,.85); }
+    .water-slide h2 { color: var(--cream); }
+    .resort-mark { position: absolute; right: 5%; bottom: 9%; display: grid; place-items: center; width: clamp(150px, 23vw, 280px); height: clamp(150px, 23vw, 280px); border: clamp(18px, 3vw, 33px) solid var(--earth); border-radius: 50%; box-shadow: inset 0 0 0 9px var(--cream), 10px 10px 0 var(--ink); transform: rotate(14deg); }
+    .resort-mark::after { width: 42%; height: 42%; border-radius: 50%; background: var(--water); content: ""; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .feature { min-height: 155px; padding: 24px; border: 1px solid var(--ink); background: rgba(255,253,247,.5); }
+    .feature:nth-child(2) { background: var(--mint); color: var(--ink); }
+    .feature:nth-child(3) { background: var(--earth); color: var(--white); }
+    .feature:nth-child(4) { background: var(--water); color: var(--cream); }
+    .feature p { margin-bottom: 0; line-height: 1.35; font-size: 15px; }
+    .feature strong { display: block; margin-bottom: 8px; font-size: 22px; letter-spacing: -.04em; }
+    .feature.light { background: var(--cream); }
+    .feature.eco { background: var(--mint); color: var(--ink); }
+    .feature.culture { background: var(--earth); color: var(--white); }
+    .feature.knowledge { background: var(--water); color: var(--cream); }
+    .feature.value { background: var(--cream); border: 2px solid var(--earth); color: var(--ink); }
+    .journey { display: grid; grid-template-columns: repeat(6, 1fr); align-items: center; gap: 9px; margin-top: 65px; }
+    .journey-step { min-height: 125px; padding: 16px 12px; border: 1px solid var(--ink); background: var(--white); }
+    .journey-step:nth-child(3), .journey-step:nth-child(5) { background: var(--earth); color: var(--ink); }
+    .journey-step strong { display: block; margin-bottom: 10px; font-size: 18px; line-height: 1; }
+    .journey-step span { font: 500 10px "DM Mono", monospace; text-transform: uppercase; }
+    .arrow { font-size: 25px; text-align: center; }
+    .quote { max-width: 880px; margin: 30px 0 0; padding: 26px 30px; border-left: 8px solid var(--earth); background: var(--white); font-size: clamp(1.45rem, 3vw, 2.6rem); line-height: 1.05; letter-spacing: -.05em; }
+    .stat-block { padding: 24px; border: 1px solid var(--ink); background: var(--white); text-align: center; }
+    .stat-number { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; color: var(--water); }
+    .stat-label { font-size: 12px; margin-top: 8px; text-transform: uppercase; letter-spacing: .08em; }
+    .risk-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; }
+    .risk { padding: 21px; border: 1px solid var(--ink); background: var(--white); }
+    .risk:nth-child(2), .risk:nth-child(5) { background: var(--earth); opacity: .9; }
+    .risk:nth-child(3), .risk:nth-child(6) { background: var(--water); color: var(--cream); }
+    .risk strong { display: block; margin-bottom: 8px; font-size: 18px; }
+    .risk p { margin-bottom: 0; line-height: 1.3; font-size: 14px; }
+    .image-feature { margin-top: 32px; border-radius: 8px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.12); }
+    .image-feature img { width: 100%; height: auto; display: block; }
+    .pillar-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 40px; }
+    .pillar { padding: 28px; border: 2px solid var(--forest); border-radius: 8px; background: rgba(247,241,230,.6); }
+    .pillar strong { display: block; font-size: 24px; color: var(--forest); margin-bottom: 12px; }
+    .pillar p { margin: 0; font-size: 14px; line-height: 1.5; color: rgba(24,38,43,.8); }
+    .rules-list { list-style: none; padding: 0; margin-top: 24px; }
+    .rules-list li { padding: 16px; margin-bottom: 12px; background: var(--cream); border-left: 4px solid var(--earth); font-size: 15px; line-height: 1.6; }
+    .rules-list strong { color: var(--forest); }
+    .investment-bar { padding: 16px 20px; border: 1px solid var(--ink); background: var(--white); margin-bottom: 10px; }
+    .investment-bar-label { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+    .investment-bar-fill { height: 8px; background: linear-gradient(90deg, var(--water), var(--earth)); border-radius: 4px; }
+    .conclusion { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+    .next-steps { display: flex; flex-wrap: wrap; gap: 9px; max-width: 700px; margin-top: 35px; }
+    .next-steps span { padding: 10px 13px; border: 1px solid var(--ink); background: var(--earth); font: 500 11px "DM Mono", monospace; text-transform: uppercase; }
+    .controls { position: fixed; z-index: 4; right: 25px; bottom: 22px; left: 25px; display: flex; justify-content: space-between; align-items: center; pointer-events: none; }
+    .controls > * { pointer-events: auto; }
+    .control-group { display: flex; gap: 8px; }
+    .control-button { display: grid; place-items: center; width: 43px; height: 38px; border: 1px solid var(--ink); color: var(--ink); background: var(--cream); cursor: pointer; }
+    .control-button:hover { color: var(--white); background: var(--water); }
+    .dots { display: flex; gap: 7px; max-width: 55vw; overflow: auto; padding: 4px; }
+    .dot { flex: 0 0 8px; width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; background: var(--ink); opacity: .3; cursor: pointer; }
+    .dot.active { width: 24px; border-radius: 8px; background: var(--earth); opacity: 1; }
+    .notes-panel { position: fixed; z-index: 3; right: 0; bottom: 0; width: min(430px, 100%); padding: 28px; border-top: 2px solid var(--ink); border-left: 2px solid var(--ink); background: var(--white); box-shadow: -7px -7px 0 var(--ink); transform: translateY(105%); transition: transform .3s ease; }
+    .notes-panel.open { transform: translateY(0); }
+    .notes-panel h3 { margin-bottom: 10px; }
+    .notes-panel p { line-height: 1.45; }
+    .notes-close { position: absolute; top: 17px; right: 18px; border: 0; background: transparent; font-size: 20px; cursor: pointer; }
+    @media (max-width: 760px) {
+      .slide { padding: 25px 20px 91px; }
+      .slide-content { min-height: auto; }
+      h1 { font-size: clamp(3.4rem, 17vw, 6rem); }
+      h2 { font-size: clamp(2.8rem, 13vw, 5rem); }
+      .resort-mark { right: 9%; bottom: 18%; opacity: .65; }
+      .grid-2, .grid-4, .pillar-grid, .risk-grid { grid-template-columns: 1fr; }
+      .feature { min-height: 0; padding: 17px; }
+      .journey { grid-template-columns: repeat(2, 1fr); margin-top: 25px; }
+      .journey .arrow { display: none; }
+      .journey-step { min-height: 92px; }
+      .footer-meta { position: relative; margin-top: 35px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" aria-label="Samaúma resort presentation">
+    
+    <!-- Slide 1: Title -->
+    <section class="slide forest-slide active" data-notes="Samaúma is a €30 million eco-cultural destination in the Amazon. It combines authentic community partnership, environmental stewardship, scientific research, and premium tourism into one integrated model.">
+      <div class="slide-content title-layout">
+        <p class="eyebrow">Amazon Eco-Cultural Resort / 2026</p>
+        <h1>Samaúma</h1>
+        <p class="dek">The island is not our product.<br>The island is our partner.</p>
+        <span class="title-stamp">Experience the Amazon. Protect its future.</span>
+        <div class="resort-mark" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- Slide 2: Why Different -->
+    <section class="slide" data-notes="Traditional resorts extract value. Samaúma creates it through a model that prioritizes local employment, environmental protection, cultural authenticity, and year-round economic activity.">
+      <div class="slide-content">
+        <p class="eyebrow">01 / The Difference</p>
+        <h2>Most resorts extract.<br><em>Samaúma creates.</em></h2>
+        <div class="grid-2">
+          <div class="feature">
+            <strong>Traditional Model</strong>
+            <p>Mass tourism, centralized hotel, imported supplies, seasonal employment, cultural tourism as spectacle.</p>
+          </div>
+          <div class="feature">
+            <strong>Samaúma Model</strong>
+            <p>Curated experiences, distributed eco-cabins, local suppliers, permanent partnerships, authentic engagement.</p>
+          </div>
+        </div>
+        <p class="quote">Luxury in the experience, not luxury through scale. Samaúma sells exclusivity, authenticity and access to nature — not mass accommodation.</p>
+        <div class="footer-meta"><span class="meta">Samaúma / Positioning</span><span class="meta">Premium over volume</span></div>
+      </div>
+    </section>
+
+    <!-- Slide 3: Four Pillars -->
+    <section class="slide water-slide" data-notes="Four Pillars form the foundation of Samaúma: ECO for environmental protection, CULTURE for community partnership, KNOWLEDGE for research and education, and VALUE for local economic benefit.">
+      <div class="slide-content">
+        <p class="eyebrow">02 / Foundation</p>
+        <h2>Four pillars of<br><em>excellence.</em></h2>
+        <div class="grid-4">
+          <div class="feature eco">
+            <strong>🌱 ECO</strong>
+            <p>Low-impact infrastructure, renewable energy, water efficiency, protected biodiversity.</p>
+          </div>
+          <div class="feature culture">
+            <strong>🎭 CULTURE</strong>
+            <p>Local communities as hosts & partners; villages remain living communities.</p>
+          </div>
+          <div class="feature knowledge">
+            <strong>🔬 KNOWLEDGE</strong>
+            <p>Scientific research, education, year-round Convention & Knowledge Centre.</p>
+          </div>
+          <div class="feature value">
+            <strong>💎 VALUE</strong>
+            <p>Revenue circulates locally; 70%+ Brazilian sourcing; community benefits.</p>
+          </div>
+        </div>
+        <div class="footer-meta"><span class="meta">Integrated strategy</span><span class="meta">Not separate initiatives</span></div>
+      </div>
+    </section>
+
+    <!-- Slide 4: Eco-Cabins -->
+    <section class="slide" data-notes="Eco-cabins replace the conventional large hotel. Premium features with low environmental impact: solar power, water efficiency, natural materials, private verandas overlooking forest and lake.">
+      <div class="slide-content">
+        <p class="eyebrow">03 / Accommodation</p>
+        <h2>Luxury eco-cabins<br><em>not mass hotel.</em></h2>
+        <div class="image-feature">
+          <img src="sideproject/WhatsApp Image 2026-08-28 at 10.24.18.jpeg" alt="Eco-cabin with forest views">
+        </div>
+        <div class="grid-2" style="margin-top: 32px;">
+          <div class="feature light">
+            <strong>Distributed Units</strong>
+            <p>Small premium cabins allow immersion while keeping footprint low. No massive centralized complex.</p>
+          </div>
+          <div class="feature light">
+            <strong>Premium Materials</strong>
+            <p>Solar power, water efficiency, natural materials, private verandas, Brazilian-made furniture, outdoor bathing experiences.</p>
+          </div>
+        </div>
+        <div class="footer-meta"><span class="meta">Samaúma / Design</span><span class="meta">Intimacy over scale</span></div>
+      </div>
+    </section>
+
+    <!-- Slide 5: Community Protection -->
+    <section class="slide forest-slide" data-notes="Five rules protect local residents and ensure the resort benefits the community. These aren't add-on policies—they're embedded in the business model itself.">
+      <div class="slide-content">
+        <p class="eyebrow">04 / Social Responsibility</p>
+        <h2>Five rules protect<br><em>local residents.</em></h2>
+        <ol class="rules-list" style="color: rgba(247,241,230,.9);">
+          <li><strong>≥60% local employment</strong> — Tourism jobs go to community members first</li>
+          <li><strong>No displacement</strong> — Families cannot be evicted from residential housing</li>
+          <li><strong>Sacred areas protected</strong> — Wildlife & cultural zones remain restricted to tourists</li>
+          <li><strong>40,000 annual visitor cap</strong> — Hard limit prevents overtourism</li>
+          <li><strong>≥70% Brazilian sourcing</strong> — Food, furniture, supplies circulate locally</li>
+        </ol>
+        <p class="quote" style="border-left-color: var(--earth); color: rgba(247,241,230,.9);">Social protection is baked into the business model. It's the strategy, not an afterthought.</p>
+        <div class="footer-meta"><span class="meta">Protection by design</span><span class="meta">Community first</span></div>
+      </div>
+    </section>
+
+    <!-- Slide 6: Investment -->
+    <section class="slide" data-notes="€30 million investment allocated strategically: airport for controlled access (40%), renewable energy + water (23%), accommodations & amenities (10%), events & community spaces (8%), research & conservation (8%), community fund & operations (5%).">
+      <div class="slide-content">
+        <p class="eyebrow">05 / Investment Strategy</p>
+        <h2>€30 million<br><em>smart allocation.</em></h2>
+        <div style="margin-top: 32px;">
+          <div class="investment-bar">
+            <div class="investment-bar-label"><span>Small International Airport</span><strong>€12.0M (40%)</strong></div>
+            <div class="investment-bar-fill" style="width: 40%;"></div>
+          </div>
+          <div class="investment-bar">
+            <div class="investment-bar-label"><span>Solar Energy + Water Systems</span><strong>€7.0M (23%)</strong></div>
+            <div class="investment-bar-fill" style="width: 23%;"></div>
+          </div>
+          <div class="investment-bar">
+            <div class="investment-bar-label"><span>Eco-Cabins & Amenities</span><strong>€3.0M (10%)</strong></div>
+            <div class="investment-bar-fill" style="width: 10%;"></div>
+          </div>
+          <div class="investment-bar">
+            <div class="investment-bar-label"><span>Convention & Community Centres</span><strong>€2.5M (8%)</strong></div>
+            <div class="investment-bar-fill" style="width: 8%;"></div>
+          </div>
+          <div class="investment-bar">
+            <div class="investment-bar-label"><span>Transport, Conservation, Research</span><strong>€2.5M (8%)</strong></div>
+            <div class="investment-bar-fill" style="width: 8%;"></div>
+          </div>
+          <div class="investment-bar">
+            <div class="investment-bar-label"><span>Community Fund & Operations</span><strong>€1.5M (5%)</strong></div>
+            <div class="investment-bar-fill" style="width: 5%;"></div>
+          </div>
+        </div>
+        <p style="margin-top: 24px; font-size: 14px;">Largest investment in access (airport) ensures controlled traffic. Environmental & community spending built-in, not bolted on.</p>
+        <div class="footer-meta"><span class="meta">Strategic allocation</span><span class="meta">Purpose-driven spending</span></div>
+      </div>
+    </section>
+
+    <!-- Slide 7: Curated Packages -->
+    <section class="slide water-slide" data-notes="Five signature packages attract different traveler profiles. Rather than concentrating everyone on the beach, packages distribute visitors across nature, culture, education, and relaxation.">
+      <div class="slide-content">
+        <p class="eyebrow">06 / Experience Design</p>
+        <h2>Curated packages,<br><em>not mass tourism.</em></h2>
+        <div class="grid-2">
+          <div class="feature" style="background: rgba(247,241,230,.85);">
+            <strong>Amazon Roots</strong>
+            <p style="font-size: 13px;"><strong>5 days:</strong> Traditional village visit, local cooking, crafts, forest walk, community activities.</p>
+          </div>
+          <div class="feature" style="background: rgba(247,241,230,.85);">
+            <strong>Wild Island</strong>
+            <p style="font-size: 13px;"><strong>6 days:</strong> Wildlife trails, freshwater lake, mountain excursion, conservation briefing.</p>
+          </div>
+          <div class="feature" style="background: rgba(247,241,230,.85);">
+            <strong>Blue & Green</strong>
+            <p style="font-size: 13px;"><strong>5 days:</strong> Protected beach, kayaking, forest activity, sustainable Brazilian cuisine.</p>
+          </div>
+          <div class="feature" style="background: rgba(247,241,230,.85);">
+            <strong>Samaúma Immersion</strong>
+            <p style="font-size: 13px;"><strong>7 days:</strong> Full cultural & nature programme combining community, food, forest, lake.</p>
+          </div>
+        </div>
+        <div class="footer-meta"><span class="meta">Distribute visitors</span><span class="meta">Diverse interests welcomed</span></div>
+      </div>
+    </section>
+
+    <!-- Slide 8: Seasonality -->
+    <section class="slide" data-notes="The Convention & Knowledge Centre solves seasonality. High season: tourism packages and corporate retreats. Low season: research, government programmes, international forums, university events.">
+      <div class="slide-content">
+        <p class="eyebrow">07 / Year-Round Economy</p>
+        <h2>Convention Centre<br><em>beats seasonality.</em></h2>
+        <div class="image-feature">
+          <img src="sideproject/WhatsApp Image 2026-08-28 at 10.24.18 (1).jpeg" alt="Convention Centre concept">
+        </div>
+        <div class="grid-2" style="margin-top: 32px;">
+          <div class="stat-block">
+            <strong style="color: var(--water);">High Season</strong>
+            <p style="font-size: 13px; margin-top: 12px;">Apr–Sep: Tourism packages, corporate retreats, cultural events, workshops.</p>
+          </div>
+          <div class="stat-block">
+            <strong style="color: var(--water);">Low Season</strong>
+            <p style="font-size: 13px; margin-top: 12px;">Oct–Mar: Research events, government programmes, university forums, conservation conferences.</p>
+          </div>
+        </div>
+        <div class="footer-meta"><span class="meta">Small venue, global purpose</span><span class="meta">Revenue all year</span></div>
+      </div>
+    </section>
+
+    <!-- Slide 9: Environmental -->
+    <section class="slide forest-slide" data-notes="Environmental infrastructure is built-in: €4M solar energy for renewable power, €3M water systems for resilience, €500K biodiversity research, €250K organic waste composting. Waste becomes resource on the island.">
+      <div class="slide-content">
+        <p class="eyebrow">08 / Environmental Leadership</p>
+        <h2>Built-in<br><em>sustainability.</em></h2>
+        <div class="pillar-grid">
+          <div class="pillar" style="background: rgba(189,229,208,.3); border-color: var(--mint);">
+            <strong style="color: var(--forest);">☀️ Solar Energy (€4M)</strong>
+            <p>Large-scale renewable power reduces fossil-fuel dependence and demonstrates climate commitment.</p>
+          </div>
+          <div class="pillar" style="background: rgba(43,110,142,.15); border-color: var(--water);">
+            <strong style="color: var(--forest);">💧 Smart Water (€3M)</strong>
+            <p>Resilient systems with efficiency, reuse, and monitoring ensure reliability without resource conflict.</p>
+          </div>
+          <div class="pillar" style="background: rgba(26,58,46,.1); border-color: var(--forest);">
+            <strong style="color: var(--forest);">🔬 Biodiversity Research (€500K)</strong>
+            <p>Fauna, flora, and ecosystem monitoring create living laboratory and justify premium brand positioning.</p>
+          </div>
+          <div class="pillar" style="background: rgba(212,165,116,.15); border-color: var(--earth);">
+            <strong style="color: var(--forest);">♻️ Circular Waste (€250K)</strong>
+            <p>Composting and biogas keep organic waste on-island. "Waste doesn't leave—it becomes a resource."</p>
+          </div>
+        </div>
+        <div class="footer-meta"><span class="meta">Environmental credentials</span><span class="meta">Not marketing—strategy</span></div>
+      </div>
+    </section>
+
+    <!-- Slide 10: Revenue Model -->
+    <section class="slide water-slide" data-notes="Premium per-visitor value (€4,500+) vs mass tourism (€800–1,200). 35,000 annual visitors with hard cap of 40,000 prevents overtourism while maintaining profitability and margins.">
+      <div class="slide-content">
+        <p class="eyebrow">09 / Financial Model</p>
+        <h2>Premium pricing<br><em>+ controlled volume.</em></h2>
+        <div class="grid-2" style="margin-top: 48px;">
+          <div class="stat-block" style="background: rgba(247,241,230,.9);">
+            <div class="stat-number">35K</div>
+            <div class="stat-label">Visitors Annually (Initial Target)</div>
+          </div>
+          <div class="stat-block" style="background: rgba(247,241,230,.9);">
+            <div class="stat-number">€4,500+</div>
+            <div class="stat-label">Premium Per-Visitor Value</div>
+          </div>
+        </div>
+        <p style="margin-top: 32px; font-size: 15px; line-height: 1.6; color: rgba(247,241,230,.9);">
+          <strong>40,000 annual visitor cap</strong> ensures exclusivity, prevents overtourism, and protects brand positioning. Premium value per visitor supports higher margins than mass tourism.
+        </p>
+        <div class="footer-meta"><span class="meta">Economics of exclusivity</span><span class="meta">Quality over quantity</span></div>
+      </div>
+    </section>
+
+    <!-- Slide 11: Competitive Advantage -->
+    <section class="slide" data-notes="Samaúma differentiates on multiple fronts: environmental credentials, cultural authenticity, year-round operations through the Convention Centre, local employment guarantees, and premium positioning impossible for mass-market resorts.">
+      <div class="slide-content">
+        <p class="eyebrow">10 / Competitive Advantage</p>
+        <h2>Why Samaúma<br><em>wins.</em></h2>
+        <div class="grid-2">
+          <div class="feature">
+            <strong>Differentiation</strong>
+            <p>Not a beach resort. Eco-tourism + culture + research + knowledge events combined into one integrated experience.</p>
+          </div>
+          <div class="feature">
+            <strong>Brand Strength</strong>
+            <p>Brazilian food, furniture, culture, and landscape create distinctive identity difficult to replicate.</p>
+          </div>
+          <div class="feature">
+            <strong>Local Legitimacy</strong>
+            <p>Employment, sourcing, and Community Fund give residents direct economic stake in success.</p>
+          </div>
+          <div class="feature">
+            <strong>Risk Control</strong>
+            <p>40,000 visitor cap + Convention Centre + social rules prevent uncontrolled volume growth and community backlash.</p>
+          </div>
+        </div>
+        <p class="quote">The most successful destination is not the one that attracts the most people, but the one that creates the most value without destroying what makes it special.</p>
+        <div class="footer-meta"><span class="meta">Strategic positioning</span><span class="meta">Protected advantage</span></div>
+      </div>
+    </section>
+
+    <!-- Slide 12: Risks & Mitigation -->
+    <section class="slide" data-notes="Six critical risks with mitigations: overtourism (capped), community opposition (local employment rule), environmental damage (protection + research), water pressure (dedicated infrastructure), seasonality (Convention Centre), supply logistics (Brazilian sourcing + farm).">
+      <div class="slide-content">
+        <p class="eyebrow">11 / Risk Management</p>
+        <h2>Built to<br><em>last.</em></h2>
+        <div class="risk-grid">
+          <div class="risk">
+            <strong>Overtourism</strong>
+            <p>40K cap, no mass-market hotel, airline partnerships.</p>
+          </div>
+          <div class="risk">
+            <strong>Community Opposition</strong>
+            <p>60% employment rule, housing protection, community fund.</p>
+          </div>
+          <div class="risk">
+            <strong>Environmental Damage</strong>
+            <p>Protected zones, €500K research, low-impact design.</p>
+          </div>
+          <div class="risk">
+            <strong>Water Pressure</strong>
+            <p>Dedicated €3M infrastructure, efficiency, reuse systems.</p>
+          </div>
+          <div class="risk">
+            <strong>Seasonality</strong>
+            <p>Convention Centre, institutional events, research programming.</p>
+          </div>
+          <div class="risk">
+            <strong>Supply Logistics</strong>
+            <p>70%+ Brazilian sourcing, organic farm, local producers.</p>
+          </div>
+        </div>
+        <div class="footer-meta"><span class="meta">Proactive management</span><span class="meta">Risks addressed by design</span></div>
+      </div>
+    </section>
+
+    <!-- Slide 13: Success Metrics -->
+    <section class="slide water-slide" data-notes="KPIs tracked across visitor experience, community impact, environmental health, and operations: visitor satisfaction, local employment ≥60%, Brazilian sourcing ≥70%, waste diversion, biodiversity monitoring, community fund deployment, employment stability.">
+      <div class="slide-content">
+        <p class="eyebrow">12 / Accountability</p>
+        <h2>How we<br><em>measure success.</em></h2>
+        <div class="grid-2" style="margin-top: 40px;">
+          <div class="stat-block" style="background: rgba(247,241,230,.15); border: 1px solid rgba(247,241,230,.3); color: var(--cream);">
+            <strong>Visitor Experience</strong>
+            <p style="font-size: 12px; margin-top: 12px;">35,000 visitors/year • Premium value • High satisfaction • Repeat rates</p>
+          </div>
+          <div class="stat-block" style="background: rgba(247,241,230,.15); border: 1px solid rgba(247,241,230,.3); color: var(--cream);">
+            <strong>Community Impact</strong>
+            <p style="font-size: 12px; margin-top: 12px;">≥60% local employment • ≥70% Brazilian sourcing • Community fund deployment</p>
+          </div>
+          <div class="stat-block" style="background: rgba(247,241,230,.15); border: 1px solid rgba(247,241,230,.3); color: var(--cream);">
+            <strong>Environmental</strong>
+            <p style="font-size: 12px; margin-top: 12px;">Biodiversity monitoring • Organic waste diversion • Carbon footprint reduction</p>
+          </div>
+          <div class="stat-block" style="background: rgba(247,241,230,.15); border: 1px solid rgba(247,241,230,.3); color: var(--cream);">
+            <strong>Operations</strong>
+            <p style="font-size: 12px; margin-top: 12px;">Year-round employment • Event revenue growth • Research publications</p>
+          </div>
+        </div>
+        <div class="footer-meta"><span class="meta">Transparent KPIs</span><span class="meta">Verified impact</span></div>
+      </div>
+    </section>
+
+    <!-- Slide 14: Brand Story -->
+    <section class="slide" data-notes="Travelers choose Samaúma for purpose-driven travel where every stay supports conservation and local livelihoods. Authenticity replaces spectacle. Exclusivity ensures intimacy. Knowledge woven into every experience.">
+      <div class="slide-content">
+        <p class="eyebrow">13 / Brand Positioning</p>
+        <h2>Why travelers<br><em>choose Samaúma.</em></h2>
+        <div class="image-feature">
+          <img src="sideproject/WhatsApp Image 2026-08-28 at 10.24.17.jpeg" alt="Resort landscape and community">
+        </div>
+        <div class="grid-2" style="margin-top: 32px;">
+          <div class="feature light">
+            <strong>🌍 Purpose</strong>
+            <p>Every stay supports conservation, research, and local livelihoods. Guilt-free luxury.</p>
+          </div>
+          <div class="feature light">
+            <strong>🎭 Authenticity</strong>
+            <p>Real communities, real culture, real impact. Not a themed experience.</p>
+          </div>
+          <div class="feature light">
+            <strong>🏆 Exclusivity</strong>
+            <p>Capped visitor numbers ensure intimacy, privacy, and premium positioning.</p>
+          </div>
+          <div class="feature light">
+            <strong>📚 Knowledge</strong>
+            <p>Science & education woven into every experience. Learn, don't just relax.</p>
+          </div>
+        </div>
+        <div class="footer-meta"><span class="meta">Samaúma / Brand</span><span class="meta">Purpose-driven travel</span></div>
+      </div>
+    </section>
+
+    <!-- Slide 15: Conclusion -->
+    <section class="slide forest-slide" data-notes="Samaúma proves luxury and conservation are partners, not opposites. The goal is not maximum people but maximum value without destroying what makes the island special.">
+      <div class="slide-content conclusion">
+        <p class="eyebrow">14 / Final Promise</p>
+        <h2>The island is<br><em>our partner.</em></h2>
+        <p class="dek">Samaúma proves that luxury and conservation aren't opposites. They're partners.</p>
+        <p style="margin-top: 28px; font-size: 18px; line-height: 1.6; color: rgba(247,241,230,.85);">
+          The most successful destination is not the one that attracts the most people. It is the one that creates the most value without destroying what makes it special.
+        </p>
+        <div class="next-steps">
+          <span>Protect Communities</span>
+          <span>Regenerate Ecosystems</span>
+          <span>Create Knowledge</span>
+          <span>Build Value</span>
+        </div>
+        <div class="footer-meta"><span class="meta">Thank you</span><span class="meta">Samaúma / End</span></div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="controls">
+    <div class="control-group">
+      <button class="control-button" onclick="document.querySelector('.deck').scrollBy(0, -window.innerHeight)">↑</button>
+      <button class="control-button" onclick="document.querySelector('.deck').scrollBy(0, window.innerHeight)">↓</button>
+    </div>
+    <div class="dots" id="dots"></div>
+    <button class="control-button" onclick="document.querySelector('.notes-panel').classList.toggle('open')">📝</button>
+  </div>
+
+  <div class="notes-panel">
+    <button class="notes-close" onclick="this.parentElement.classList.remove('open')">✕</button>
+    <h3>Speaker Notes</h3>
+    <p id="notes">Select a slide to view speaker notes.</p>
+  </div>
+
+  <script>
+    const deck = document.querySelector('.deck');
+    const slides = document.querySelectorAll('.slide');
+    const dotsContainer = document.querySelector('#dots');
+    const notesDisplay = document.querySelector('#notes');
+
+    slides.forEach((slide, index) => {
+      const dot = document.createElement('button');
+      dot.className = 'dot' + (index === 0 ? ' active' : '');
+      dot.onclick = () => {
+        slide.scrollIntoView({ behavior: 'smooth' });
+      };
+      dotsContainer.appendChild(dot);
+    });
+
+    deck.addEventListener('scroll', () => {
+      slides.forEach((slide, index) => {
+        const rect = slide.getBoundingClientRect();
+        if (rect.top >= 0 && rect.top < window.innerHeight) {
+          document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
+          document.querySelectorAll('.dot')[index].classList.add('active');
+          slide.classList.add('active');
+          
+          const notes = slide.getAttribute('data-notes');
+          notesDisplay.textContent = notes || 'No notes for this slide.';
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
