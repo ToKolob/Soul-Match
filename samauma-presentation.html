@@ -80,7 +80,7 @@
     .stat-label { font-size: 12px; margin-top: 8px; text-transform: uppercase; letter-spacing: .08em; }
     .risk-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; }
     .risk { padding: 21px; border: 1px solid var(--ink); background: var(--white); }
-    .risk:nth-child(2), .risk:nth-child(5) { background: var(--earth); opacity: .9; }
+    .risk:nth-child(2), .risk:nth-child(5) { background: var(--earth); color: var(--white); }
     .risk:nth-child(3), .risk:nth-child(6) { background: var(--water); color: var(--cream); }
     .risk strong { display: block; margin-bottom: 8px; font-size: 18px; }
     .risk p { margin-bottom: 0; line-height: 1.3; font-size: 14px; }
@@ -430,21 +430,21 @@
         <p class="eyebrow">12 / Accountability</p>
         <h2>How we<br><em>measure success.</em></h2>
         <div class="grid-2" style="margin-top: 40px;">
-          <div class="stat-block" style="background: rgba(247,241,230,.15); border: 1px solid rgba(247,241,230,.3); color: var(--cream);">
-            <strong>Visitor Experience</strong>
-            <p style="font-size: 12px; margin-top: 12px;">35,000 visitors/year • Premium value • High satisfaction • Repeat rates</p>
+          <div class="stat-block" style="background: rgba(26,58,46,.85); border: 1px solid rgba(26,58,46,.9); color: var(--cream);">
+            <strong style="color: var(--cream);">Visitor Experience</strong>
+            <p style="font-size: 12px; margin-top: 12px; color: rgba(247,241,230,.9);">35,000 visitors/year • Premium value • High satisfaction • Repeat rates</p>
           </div>
-          <div class="stat-block" style="background: rgba(247,241,230,.15); border: 1px solid rgba(247,241,230,.3); color: var(--cream);">
-            <strong>Community Impact</strong>
-            <p style="font-size: 12px; margin-top: 12px;">≥60% local employment • ≥70% Brazilian sourcing • Community fund deployment</p>
+          <div class="stat-block" style="background: rgba(26,58,46,.85); border: 1px solid rgba(26,58,46,.9); color: var(--cream);">
+            <strong style="color: var(--cream);">Community Impact</strong>
+            <p style="font-size: 12px; margin-top: 12px; color: rgba(247,241,230,.9);">≥60% local employment • ≥70% Brazilian sourcing • Community fund deployment</p>
           </div>
-          <div class="stat-block" style="background: rgba(247,241,230,.15); border: 1px solid rgba(247,241,230,.3); color: var(--cream);">
-            <strong>Environmental</strong>
-            <p style="font-size: 12px; margin-top: 12px;">Biodiversity monitoring • Organic waste diversion • Carbon footprint reduction</p>
+          <div class="stat-block" style="background: rgba(26,58,46,.85); border: 1px solid rgba(26,58,46,.9); color: var(--cream);">
+            <strong style="color: var(--cream);">Environmental</strong>
+            <p style="font-size: 12px; margin-top: 12px; color: rgba(247,241,230,.9);">Biodiversity monitoring • Organic waste diversion • Carbon footprint reduction</p>
           </div>
-          <div class="stat-block" style="background: rgba(247,241,230,.15); border: 1px solid rgba(247,241,230,.3); color: var(--cream);">
-            <strong>Operations</strong>
-            <p style="font-size: 12px; margin-top: 12px;">Year-round employment • Event revenue growth • Research publications</p>
+          <div class="stat-block" style="background: rgba(26,58,46,.85); border: 1px solid rgba(26,58,46,.9); color: var(--cream);">
+            <strong style="color: var(--cream);">Operations</strong>
+            <p style="font-size: 12px; margin-top: 12px; color: rgba(247,241,230,.9);">Year-round employment • Event revenue growth • Research publications</p>
           </div>
         </div>
         <div class="footer-meta"><span class="meta">Transparent KPIs</span><span class="meta">Verified impact</span></div>
@@ -522,6 +522,7 @@
     const slides = document.querySelectorAll('.slide');
     const dotsContainer = document.querySelector('#dots');
     const notesDisplay = document.querySelector('#notes');
+    let currentSlideIndex = 0;
 
     slides.forEach((slide, index) => {
       const dot = document.createElement('button');
