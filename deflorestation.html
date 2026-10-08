@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deforestation | The Environmental Impact of Human Greed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #18262b;
+      --cream: #f7f1e6;
+      --forest: #1a3a2e;
+      --green: #315c43;
+      --coral: #f36d52;
+      --vibrant-red: #e32636;
+      --yellow: #f2cf58;
+      --mint: #bde5d0;
+      --white: #fffdf7;
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+    body { color: var(--ink); font-family: "Space Grotesk", sans-serif; background: var(--cream); }
+    button { font: inherit; }
+    button:focus-visible { outline: 3px solid var(--green); outline-offset: 4px; }
+    .deck { position: relative; width: 100%; height: 100%; overflow-y: auto; scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+    .slide { position: relative; display: flex; min-height: 100%; height: 100vh; padding: clamp(26px, 5vw, 72px) clamp(24px, 8vw, 140px) 104px; overflow: auto; scroll-snap-align: start; background: var(--cream); }
+    .slide.active { animation: slide-in .42s ease both; }
+    @keyframes slide-in { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: translateX(0); } }
+    .slide::before { position: absolute; z-index: 0; inset: 0; pointer-events: none; opacity: .2; content: ""; background-image: radial-gradient(var(--ink) 1px, transparent 1px); background-size: 20px 20px; }
+    .slide-content { position: relative; z-index: 1; width: min(1100px, 100%); min-height: 100%; margin: auto; }
+    .eyebrow, .meta, .label { font: 500 11px "DM Mono", monospace; text-transform: uppercase; letter-spacing: .12em; }
+    .eyebrow { margin: 0 0 25px; color: var(--green); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 900px; margin-bottom: 28px; font-size: clamp(3.8rem, 10vw, 9rem); line-height: .84; letter-spacing: -.09em; }
+    h1 em, h2 em { color: var(--coral); font-style: normal; }
+    h2 { max-width: 950px; margin-bottom: 38px; font-size: clamp(2.6rem, 6vw, 6.2rem); line-height: .88; letter-spacing: -.08em; }
+    h3 { margin-bottom: 14px; font-size: 20px; letter-spacing: -.04em; }
+    .dek { max-width: 620px; font-size: clamp(1.1rem, 2vw, 1.6rem); line-height: 1.3; }
+    .footer-meta { position: absolute; right: 0; bottom: 0; left: 0; display: flex; justify-content: space-between; gap: 20px; padding-top: 18px; border-top: 1px solid rgba(24,38,43,.25); }
+    .footer-meta span:last-child { text-align: right; }
+    .title-layout, .conclusion { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+    .title-stamp { display: inline-block; width: fit-content; margin-top: 24px; padding: 12px 15px; color: var(--ink); background: var(--yellow); font: 500 12px "DM Mono", monospace; transform: rotate(-2deg); }
+    .forest-slide { color: var(--cream); background: var(--forest); }
+    .forest-slide::before { opacity: .1; }
+    .forest-slide .eyebrow { color: var(--yellow); }
+    .forest-slide h2 em { color: var(--mint); }
+    .forest-slide .dek { color: rgba(247,241,230,.82); }
+    .forest-slide .footer-meta { border-color: rgba(247,241,230,.3); }
+    .forest-slide .meta { color: rgba(247,241,230,.8); }
+    .forest-mark { position: absolute; right: 4%; bottom: 9%; display: grid; place-items: center; width: clamp(150px, 23vw, 280px); height: clamp(150px, 23vw, 280px); border: clamp(18px, 3vw, 33px) solid var(--mint); border-radius: 50%; box-shadow: inset 0 0 0 9px var(--forest), 10px 10px 0 var(--ink); transform: rotate(14deg); }
+    .forest-mark::after { width: 42%; height: 42%; border-radius: 50%; background: var(--coral); content: ""; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .feature { min-height: 155px; padding: 24px; border: 1px solid var(--ink); background: rgba(255,253,247,.7); }
+    .feature:nth-child(2) { background: var(--mint); }
+    .feature:nth-child(3) { background: var(--yellow); }
+    .feature:nth-child(4) { color: var(--white); background: var(--green); }
+    .feature p { margin-bottom: 0; line-height: 1.4; }
+    .feature strong { display: block; margin-bottom: 8px; font-size: 22px; letter-spacing: -.04em; }
+    .quote { max-width: 880px; margin: 28px 0 0; padding: 24px 28px; border-left: 8px solid var(--coral); background: var(--white); color: var(--vibrant-red); font-size: clamp(1.35rem, 2.8vw, 2.3rem); line-height: 1.08; letter-spacing: -.05em; }
+    .sumatra-layout { display: grid; grid-template-columns: minmax(220px, .72fr) minmax(0, 1.28fr); align-items: center; gap: clamp(28px, 6vw, 82px); }
+    .sumatra-media { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; }
+    .sumatra-video { display: block; width: min(100%, 300px, calc(60vh * 9 / 16)); aspect-ratio: 9 / 16; border: 2px solid var(--ink); background: #090a10; box-shadow: 9px 9px 0 var(--green); }
+    .video-link { color: var(--green); font: 500 11px "DM Mono", monospace; letter-spacing: .08em; text-transform: uppercase; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+    .video-link:hover { color: var(--coral); }
+    .sumatra-copy h2 { margin-bottom: 24px; }
+    .sumatra-copy p { max-width: 620px; font-size: clamp(1rem, 1.6vw, 1.25rem); line-height: 1.45; }
+    .sumatra-copy .feature { min-height: 0; margin-top: 18px; padding: 18px 20px; }
+    .sumatra-copy .feature strong { font-size: 18px; }
+    .action-list { display: grid; gap: 12px; padding: 0; list-style: none; }
+    .action-list li { display: flex; gap: 14px; align-items: flex-start; padding: 18px 20px; border: 1px solid var(--ink); background: var(--white); font-size: 17px; line-height: 1.35; }
+    .action-list li::before { flex: 0 0 auto; color: var(--green); font: 500 12px "DM Mono", monospace; content: "✦"; }
+    .action-list strong { display: block; margin-bottom: 4px; }
+    .impact-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .impact { min-height: 130px; padding: 22px; border: 1px solid var(--ink); background: var(--white); }
+    .impact:nth-child(2) { background: var(--mint); }
+    .impact:nth-child(3) { background: var(--yellow); }
+    .impact:nth-child(4) { color: var(--white); background: var(--green); }
+    .impact strong { display: block; margin-bottom: 9px; font-size: 19px; }
+    .impact p { margin: 0; line-height: 1.35; }
+    .video-slide { padding: 0; overflow: hidden; background: #000; }
+    .video-slide::before { display: none; }
+    .video-slide .slide-content { position: absolute; inset: 0; width: 100%; min-height: 0; margin: 0; overflow: hidden; background: #000; }
+    .full-page-video { position: absolute; top: 50%; left: 50%; width: max(100vw, 177.78vh); height: max(100vh, 56.25vw); border: 0; transform: translate(-50%, -50%); }
+    .next-steps { display: flex; flex-wrap: wrap; gap: 9px; max-width: 760px; margin-top: 30px; }
+    .next-steps span { padding: 10px 13px; border: 1px solid rgba(247,241,230,.6); color: var(--ink); background: var(--mint); font: 500 11px "DM Mono", monospace; text-transform: uppercase; }
+    .controls { position: fixed; z-index: 4; right: 25px; bottom: 22px; left: 25px; display: flex; justify-content: space-between; align-items: center; pointer-events: none; }
+    .controls > * { pointer-events: auto; }
+    .control-group { display: flex; gap: 8px; }
+    .control-button { display: grid; place-items: center; width: 43px; height: 38px; border: 1px solid var(--ink); color: var(--ink); background: var(--cream); cursor: pointer; }
+    .control-button:hover:not(:disabled) { color: var(--white); background: var(--green); }
+    .control-button:disabled { opacity: .45; cursor: not-allowed; }
+    .dots { display: flex; gap: 7px; max-width: 55vw; overflow: auto; padding: 4px; }
+    .dot { flex: 0 0 8px; width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; background: var(--ink); opacity: .3; cursor: pointer; }
+    .dot.active { width: 24px; border-radius: 8px; background: var(--coral); opacity: 1; }
+    .notes-panel { position: fixed; z-index: 3; right: 0; bottom: 0; width: min(430px, 100%); padding: 28px; border-top: 2px solid var(--ink); border-left: 2px solid var(--ink); background: var(--white); box-shadow: -7px -7px 0 var(--ink); transform: translateY(105%); transition: transform .3s ease; }
+    .notes-panel.open { transform: translateY(0); }
+    .notes-panel h3 { margin-bottom: 10px; }
+    .notes-panel p { line-height: 1.45; }
+    .notes-close { position: absolute; top: 17px; right: 18px; border: 0; background: transparent; font-size: 20px; cursor: pointer; }
+    @media (max-width: 760px) {
+      .slide { padding: 25px 20px 91px; }
+      .slide-content { min-height: auto; }
+      h1 { font-size: clamp(3.4rem, 17vw, 6rem); }
+      h2 { font-size: clamp(2.8rem, 13vw, 5rem); }
+      .forest-mark { right: 9%; bottom: 18%; opacity: .6; }
+      .grid-2, .sumatra-layout { grid-template-columns: 1fr; }
+      .sumatra-layout { gap: 22px; }
+      .sumatra-video { width: min(48vw, 220px, calc(42vh * 9 / 16)); box-shadow: 6px 6px 0 var(--green); }
+      .sumatra-copy h2 { margin-bottom: 18px; }
+      .sumatra-copy p { font-size: 16px; }
+      .feature { min-height: 0; padding: 17px; }
+      .impact-grid { grid-template-columns: 1fr 1fr; }
+      .impact { min-height: 0; padding: 16px; }
+      .footer-meta { position: relative; margin-top: 32px; }
+      .title-stamp { max-width: 88%; }
+    }
+    @media (max-width: 420px) {
+      .impact-grid { grid-template-columns: 1fr; }
+      .controls { right: 12px; left: 12px; }
+      .control-button { width: 38px; }
+      .dots { max-width: 42vw; }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" aria-label="Deforestation presentation">
+    <section class="slide forest-slide active" data-notes="This presentation looks at deforestation as a global crisis driven by human choices. Forests are essential to life, and the decisions made today will shape the world future generations inherit.">
+      <div class="slide-content title-layout">
+        <p class="eyebrow">A global environmental crisis / 2026</p>
+        <h1>The cost of<br><em>losing forests.</em></h1>
+        <p class="dek">The environmental impact of human greed — and the choices that can protect our shared future.</p>
+        <span class="title-stamp">More production. More profit. Less forest.</span>
+        <div class="forest-mark" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <section class="slide" data-notes="Deforestation destroys ecosystems, threatens biodiversity, and accelerates climate change. Its effects reach far beyond the forest, affecting communities and future generations around the world.">
+      <div class="slide-content">
+        <p class="eyebrow">01 / The global picture</p>
+        <h2>When forests fall,<br><em>everyone feels it.</em></h2>
+        <div class="grid-2">
+          <div class="feature"><strong>Ecosystems unravel</strong><p>Clearing forests destroys habitats and disrupts the living systems that depend on them.</p></div>
+          <div class="feature"><strong>Biodiversity is lost</strong><p>Plants and animals lose the places they need to survive, feed, and reproduce.</p></div>
+          <div class="feature"><strong>The climate shifts</strong><p>Forests store carbon and help regulate the climate. Their destruction adds pressure to a warming planet.</p></div>
+          <div class="feature"><strong>Communities are affected</strong><p>People who depend on forests face threats to their homes, livelihoods, and ways of life.</p></div>
+        </div>
+        <div class="footer-meta"><span class="meta">Deforestation / Global impact</span><span class="meta">One crisis, shared consequences</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-notes="Sumatra is one of the forest regions affected by palm oil plantations, logging, and paper production. The video on the left provides a visual example of the place at the center of this issue. In the Amazon, cattle farming, agriculture, illegal logging, and mining are major pressures. The industries differ, but the consequences are shared.">
+      <div class="slide-content">
+        <p class="eyebrow">02 / Brazil vs. Indonesia</p>
+        <div class="sumatra-layout">
+          <div class="sumatra-media">
+            <iframe class="sumatra-video" src="https://www.youtube-nocookie.com/embed/rC8ZGh4nhjc?autoplay=1&amp;loop=1&amp;playlist=rC8ZGh4nhjc&amp;playsinline=1" title="YouTube Short about Sumatra" loading="lazy" referrerpolicy="origin" allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <a class="video-link" href="https://www.youtube.com/shorts/rC8ZGh4nhjc" target="_blank" rel="noopener noreferrer">Open video on YouTube ↗</a>
+          </div>
+          <div class="sumatra-copy">
+            <h2>Different forests.<br><em>Same pressure.</em></h2>
+            <div class="feature"><strong>🇮🇩 Borneo &amp; Sumatra</strong><p>Palm oil plantations, logging, and paper production drive forest loss across Indonesia.</p></div>
+            <div class="feature"><strong>🇧🇷 Amazon Rainforest</strong><p>Cattle farming, agriculture, illegal logging, and mining put pressure on the Amazon.</p></div>
+            <p style="margin-top: 20px;"><strong>Shared consequences:</strong> habitat destruction, biodiversity loss, and increased carbon emissions.</p>
+          </div>
+        </div>
+        <div class="footer-meta"><span class="meta">Sumatra / Video + regional context</span><span class="meta">Local drivers, global stakes</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-notes="Forests regulate the climate and absorb carbon dioxide. Global demand for beef, soy, and palm oil connects consumers and businesses around the world to the pressures forests face. This makes deforestation an international responsibility.">
+      <div class="slide-content">
+        <p class="eyebrow">03 / Why it is global</p>
+        <h2>What happens in a forest<br><em>doesn't stay there.</em></h2>
+        <div class="grid-2">
+          <div class="feature"><strong>Climate regulation</strong><p>Forests absorb CO₂ and help stabilize the climate systems that people everywhere rely on.</p></div>
+          <div class="feature"><strong>Connected demand</strong><p>Global demand for beef, soy, and palm oil can drive land clearing far from where products are consumed.</p></div>
+        </div>
+        <p class="quote">Our supply chains cross borders. So does our responsibility to protect forests.</p>
+        <div class="footer-meta"><span class="meta">Shared responsibility</span><span class="meta">Every choice is connected</span></div>
+      </div>
+    </section>
+
+    <section class="slide forest-slide" data-notes="Different industries can produce the same outcome when profit is prioritized over environmental protection. Corporate interests and excessive consumption can reward short-term growth at the expense of nature and local communities.">
+      <div class="slide-content">
+        <p class="eyebrow">04 / The common root</p>
+        <h2>Profit over<br><em>protection.</em></h2>
+        <p class="dek">Different industries. The same choice: short-term economic growth at the expense of nature and local communities.</p>
+        <p class="quote">More production. More profit. Less forest.</p>
+        <div class="footer-meta"><span class="meta">The common root / Human greed</span><span class="meta">Change the incentives</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-notes="The Global Forest Protection Initiative proposes three complementary actions: monitor deforestation with satellites, support reforestation and local communities, and promote sustainable production and consumption. Technology and policy work best when paired with community leadership.">
+      <div class="slide-content">
+        <p class="eyebrow">05 / Our solution</p>
+        <h2>Protect forests<br><em>at every level.</em></h2>
+        <ul class="action-list">
+          <li><div><strong>🛰️ Monitor with satellites</strong>Track forest loss and make changes visible in time to act.</div></li>
+          <li><div><strong>🌱 Restore and support</strong>Fund reforestation while strengthening the communities who live alongside forests.</div></li>
+          <li><div><strong>♻️ Produce and consume sustainably</strong>Choose practices and products that reduce pressure on forest ecosystems.</div></li>
+        </ul>
+        <div class="footer-meta"><span class="meta">Global Forest Protection Initiative</span><span class="meta">Monitor / restore / transform</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-notes="Responsibility is shared. Governments must enforce environmental laws, businesses must adopt sustainable practices, organizations can provide funding and support, and individuals can make more responsible choices. Each group has a distinct role to play.">
+      <div class="slide-content">
+        <p class="eyebrow">06 / Who must act?</p>
+        <h2>Everyone has<br><em>a part to play.</em></h2>
+        <div class="grid-2">
+          <div class="feature"><strong>Governments</strong><p>Enforce environmental laws and protect forests and the communities who depend on them.</p></div>
+          <div class="feature"><strong>Businesses</strong><p>Adopt sustainable practices and take responsibility for the impact of their supply chains.</p></div>
+          <div class="feature"><strong>Organizations</strong><p>Provide funding, research, monitoring, and practical support for forest protection.</p></div>
+          <div class="feature"><strong>Individuals</strong><p>Make responsible choices and ask for transparency from the companies we support.</p></div>
+        </div>
+        <div class="footer-meta"><span class="meta">Collective action</span><span class="meta">Responsibility at every scale</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-notes="Protecting forests helps reduce carbon emissions, preserves biodiversity, protects Indigenous communities, and contributes to fighting climate change. These benefits reinforce one another: protecting forests is also protecting our future.">
+      <div class="slide-content">
+        <p class="eyebrow">07 / The global impact</p>
+        <h2>Protecting forests<br><em>protects our future.</em></h2>
+        <div class="impact-grid">
+          <div class="impact"><strong>Lower emissions</strong><p>Keep stored carbon in forests and reduce the emissions caused by clearing.</p></div>
+          <div class="impact"><strong>Living biodiversity</strong><p>Preserve habitats and the many species that depend on them.</p></div>
+          <div class="impact"><strong>Community rights</strong><p>Help protect Indigenous communities and the places central to their lives.</p></div>
+          <div class="impact"><strong>Climate resilience</strong><p>Keep ecosystems healthy so they can continue supporting a stable climate.</p></div>
+        </div>
+        <div class="footer-meta"><span class="meta">People + planet</span><span class="meta">Protect what sustains us</span></div>
+      </div>
+    </section>
+
+    <section class="slide forest-slide" data-notes="Deforestation reflects an economic system that can value short-term profit over long-term survival. Real progress means balancing development with environmental responsibility. Nature provides enough for everyone's needs, but not for everyone's greed. This quote is commonly attributed to Mahatma Gandhi.">
+      <div class="slide-content conclusion">
+        <p class="eyebrow">08 / A question of priorities</p>
+        <h2>What do we value<br><em>most?</em></h2>
+        <p class="dek">Real progress means balancing economic development with environmental responsibility — and choosing long-term survival over short-term profit.</p>
+        <p class="quote">“Nature provides enough for everyone’s needs, but not for everyone’s greed.”</p>
+        <p class="label" style="margin-top: 14px; color: var(--mint);">Commonly attributed to Mahatma Gandhi</p>
+        <div class="next-steps"><span>Protect forests</span><span>Support communities</span><span>Choose sustainability</span><span>Act together</span></div>
+        <div class="footer-meta"><span class="meta">Protecting forests means protecting our future</span><span class="meta">Thank you / End</span></div>
+      </div>
+    </section>
+
+    <section class="slide video-slide" data-notes="Closing video. Start playback with the YouTube player controls. The video will loop after it is started.">
+      <div class="slide-content">
+        <iframe class="full-page-video" src="https://www.youtube-nocookie.com/embed/eH8QMZq7pI4?loop=1&amp;playlist=eH8QMZq7pI4&amp;playsinline=1" title="Deforestation video" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </section>
+  </main>
+
+  <div class="controls" aria-label="Presentation controls">
+    <div class="control-group"><button id="prev" class="control-button" type="button" aria-label="Previous slide">←</button><button id="next" class="control-button" type="button" aria-label="Next slide">→</button><button id="notes-toggle" class="control-button" type="button" aria-label="Toggle speaker notes">☷</button></div>
+    <div id="dots" class="dots" aria-label="Choose slide"></div>
+  </div>
+  <aside id="notes-panel" class="notes-panel" aria-live="polite"><button id="notes-close" class="notes-close" type="button" aria-label="Close speaker notes">×</button><p class="label">Speaker notes</p><h3 id="notes-title">Slide 1</h3><p id="notes-text"></p></aside>
+
+  <script>
+    const slides = [...document.querySelectorAll('.slide')];
+    const dots = document.querySelector('#dots');
+    const deck = document.querySelector('.deck');
+    const notesPanel = document.querySelector('#notes-panel');
+    const notesTitle = document.querySelector('#notes-title');
+    const notesText = document.querySelector('#notes-text');
+    let current = 0;
+
+    slides.forEach((slide, index) => {
+      const dot = document.createElement('button');
+      dot.className = `dot${index === 0 ? ' active' : ''}`;
+      dot.type = 'button';
+      dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+      dot.addEventListener('click', () => showSlide(index));
+      dots.appendChild(dot);
+    });
+
+    function updateSlideState(index) {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => slide.classList.toggle('active', slideIndex === current));
+      [...dots.children].forEach((dot, dotIndex) => dot.classList.toggle('active', dotIndex === current));
+      notesTitle.textContent = `Slide ${current + 1}`;
+      notesText.textContent = slides[current].dataset.notes;
+      document.querySelector('#prev').disabled = current === 0;
+      document.querySelector('#next').disabled = current === slides.length - 1;
+    }
+
+    function showSlide(index) {
+      const target = Math.max(0, Math.min(index, slides.length - 1));
+      slides[target].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      updateSlideState(target);
+    }
+
+    const slideObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.intersectionRatio >= .6) updateSlideState(slides.indexOf(entry.target));
+      });
+    }, { root: deck, threshold: [.6] });
+    slides.forEach(slide => slideObserver.observe(slide));
+
+    document.querySelector('#prev').addEventListener('click', () => showSlide(current - 1));
+    document.querySelector('#next').addEventListener('click', () => showSlide(current + 1));
+    document.querySelector('#notes-toggle').addEventListener('click', () => notesPanel.classList.toggle('open'));
+    document.querySelector('#notes-close').addEventListener('click', () => notesPanel.classList.remove('open'));
+    document.addEventListener('keydown', event => {
+      if (['ArrowRight', 'PageDown', ' '].includes(event.key)) { event.preventDefault(); showSlide(current + 1); }
+      if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); showSlide(current - 1); }
+      if (event.key.toLowerCase() === 'n') notesPanel.classList.toggle('open');
+      if (event.key === 'Escape') notesPanel.classList.remove('open');
+    });
+    updateSlideState(0);
+  </script>
+</body>
+</html>
