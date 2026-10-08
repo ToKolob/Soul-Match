@@ -68,6 +68,16 @@
     .sumatra-copy p { max-width: 620px; font-size: clamp(1rem, 1.6vw, 1.25rem); line-height: 1.45; }
     .sumatra-copy .feature { min-height: 0; margin-top: 18px; padding: 18px 20px; }
     .sumatra-copy .feature strong { font-size: 18px; }
+    .sumatra-slide { padding: 0; overflow: hidden; }
+    .sumatra-slide .slide-content { width: 100%; max-width: none; min-height: 100%; margin: 0; }
+    .sumatra-slide .eyebrow { position: absolute; top: clamp(26px, 5vw, 72px); left: calc(min(56.25vh, 100vw) + clamp(24px, 6vw, 90px)); right: clamp(24px, 6vw, 90px); z-index: 2; margin: 0; }
+    .sumatra-slide .sumatra-layout { position: absolute; inset: 0; grid-template-columns: min(56.25vh, 100vw) minmax(0, 1fr); align-items: stretch; gap: 0; }
+    .sumatra-slide .sumatra-media { height: 100%; align-items: stretch; justify-content: stretch; gap: 0; }
+    .sumatra-slide .sumatra-video { width: 100%; height: 100%; max-width: none; aspect-ratio: auto; border: 0; box-shadow: none; }
+    .sumatra-slide .video-link { position: absolute; bottom: 24px; left: 24px; z-index: 2; padding: 10px 12px; border-radius: 2px; color: var(--white); background: rgba(0,0,0,.68); }
+    .sumatra-slide .video-link:hover { color: var(--yellow); }
+    .sumatra-slide .sumatra-copy { display: flex; flex-direction: column; justify-content: center; overflow-y: auto; padding: clamp(96px, 13vh, 140px) clamp(24px, 6vw, 90px) clamp(92px, 12vh, 120px); }
+    .sumatra-slide .footer-meta { right: clamp(24px, 6vw, 90px); bottom: 24px; left: calc(min(56.25vh, 100vw) + clamp(24px, 6vw, 90px)); }
     .action-list { display: grid; gap: 12px; padding: 0; list-style: none; }
     .action-list li { display: flex; gap: 14px; align-items: flex-start; padding: 18px 20px; border: 1px solid var(--ink); background: var(--white); font-size: 17px; line-height: 1.35; }
     .action-list li::before { flex: 0 0 auto; color: var(--green); font: 500 12px "DM Mono", monospace; content: "✦"; }
@@ -112,7 +122,15 @@
       .sumatra-copy p { font-size: 16px; }
       .feature { min-height: 0; padding: 17px; }
       .impact-grid { grid-template-columns: 1fr 1fr; }
-      .impact { min-height: 0; padding: 16px; }
+      .sumatra-slide { padding: 25px 20px 91px; overflow: auto; }
+      .sumatra-slide .slide-content { width: min(1100px, 100%); min-height: auto; margin: auto; }
+      .sumatra-slide .eyebrow { position: static; margin: 0 0 25px; }
+      .sumatra-slide .sumatra-layout { position: static; grid-template-columns: 1fr; gap: 22px; }
+      .sumatra-slide .sumatra-media { height: auto; align-items: flex-start; gap: 16px; }
+      .sumatra-slide .sumatra-video { width: min(48vw, 220px, calc(42vh * 9 / 16)); height: auto; aspect-ratio: 9 / 16; border: 2px solid var(--ink); box-shadow: 6px 6px 0 var(--green); }
+      .sumatra-slide .video-link { position: static; padding: 0; color: var(--green); background: transparent; }
+      .sumatra-slide .sumatra-copy { display: block; overflow: visible; padding: 0; }
+      .sumatra-slide .footer-meta { position: relative; right: auto; bottom: auto; left: auto; margin-top: 32px; }
       .footer-meta { position: relative; margin-top: 32px; }
       .title-stamp { max-width: 88%; }
     }
@@ -150,12 +168,12 @@
       </div>
     </section>
 
-    <section class="slide" data-notes="Sumatra is one of the forest regions affected by palm oil plantations, logging, and paper production. The video on the left provides a visual example of the place at the center of this issue. In the Amazon, cattle farming, agriculture, illegal logging, and mining are major pressures. The industries differ, but the consequences are shared.">
+    <section class="slide sumatra-slide" data-notes="Sumatra is one of the forest regions affected by palm oil plantations, logging, and paper production. The video on the left provides a visual example of the place at the center of this issue. In the Amazon, cattle farming, agriculture, illegal logging, and mining are major pressures. The industries differ, but the consequences are shared.">
       <div class="slide-content">
         <p class="eyebrow">02 / Brazil vs. Indonesia</p>
         <div class="sumatra-layout">
           <div class="sumatra-media">
-            <iframe class="sumatra-video" src="https://www.youtube-nocookie.com/embed/rC8ZGh4nhjc?autoplay=1&amp;loop=1&amp;playlist=rC8ZGh4nhjc&amp;playsinline=1" title="YouTube Short about Sumatra" loading="lazy" referrerpolicy="origin" allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <iframe class="sumatra-video" src="https://www.youtube-nocookie.com/embed/rC8ZGh4nhjc?loop=1&amp;playlist=rC8ZGh4nhjc&amp;playsinline=1" title="YouTube Short about Sumatra" loading="lazy" referrerpolicy="origin" allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             <a class="video-link" href="https://www.youtube.com/shorts/rC8ZGh4nhjc" target="_blank" rel="noopener noreferrer">Open video on YouTube ↗</a>
           </div>
           <div class="sumatra-copy">
